@@ -1,0 +1,23 @@
+cd ~/courier-siterequire('dotenv').config(); nano index.js const express = require('express'); const mongoose = require('mongoose'); const Delivery = require('./models/Delivery'); const mongoose = 
+require('mongoose'); const app = express(); app.use(express.json());
+
+// MongoDB connection mongoose.connect('mongodb://127.0.0.1:27017/courierDB') mongoose.connect('mongodb://localhost:27017/courierDB', { .then(() => console.log('MongoDB connected'))
+  useNewUrlParser: true, .catch(err => console.error('MongoDB connection error:', err)); useUnifiedTopology: true });// Routes app.get('/', (req, res) => {
+  res.send('Courier Backend Running');
+});
+
+app.post('/deliveries', async (req, res) => {
+  try {
+    const delivery = new Delivery(req.body);
+    await delivery.save();
+    res.status(201).json(delivery);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+});
+
+// Start server
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server running on http://localhost:${PORT}`);
+});

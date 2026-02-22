@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Courier Service</title>
+</head>
+<body>
+
+  <h1>Welcome to Our Courier Service</h1>
+
+  <p>Track your shipment below:</p>
+
+  <input type="text" id="trackingInput" placeholder="Enter Tracking Number">
+  <button onclick="goTrack()">Track Package</button>
+
+  <script>
+    function goTrack() {
+      const trackingNumber = document.getElementById("trackingInput").value.trim();
+      if (!trackingNumber) {
+        alert("Enter tracking number");
+        return;
+      }
+      window.location.href = `/track.html?tracking=${trackingNumber}`;
+    }
+  </script>
+
+</body>
+</html>

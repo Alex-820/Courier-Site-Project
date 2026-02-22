@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Dashboard</title>
+<style>
+  body { font-family: Arial, sans-serif; padding: 20px; }
+  table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+  th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+  th { background: #f0f0f0; }
+  button { padding: 5px 10px; }
+  input, select { padding: 5px; margin: 2px 0; }
+</style>
+</head>
+<body>
+
+<h2>Admin Dashboard</h2>
+
+<!-- LOGIN FORM -->
+<div id="loginDiv">
+  <h3>Login</h3>
+  <input type="text" id="username" placeholder="Username">
+  <input type="password" id="password" placeholder="Password">
+  <button id="loginBtn">Login</button>
+  <p id="loginMsg" style="color:red;"></p>
+</div>
+
+<!-- ADMIN PANEL -->
+<div id="adminDiv" style="display:none;">
+
+  <h3>Create Delivery</h3>
+  <input type="text" id="trackingNumber" placeholder="Tracking Number">
+  <input type="text" id="senderName" placeholder="Sender Name">
+  <input type="text" id="receiverName" placeholder="Receiver Name">
+  <select id="statusCreate">
+    <option value="">Select Status</option>
+    <option value="Created">Created</option>
+    <option value="Dispatched">Dispatched</option>
+    <option value="In Transit">In Transit</option>
+    <option value="Out for Delivery">Out for Delivery</option>
+    <option value="Delivered">Delivered</option>
+  </select>
+  <input type="date" id="estimatedDelivery">
+  <button id="createBtn">Create Delivery</button>
+  <p id="createMsg" style="color:green;"></p>
+
+  <h3>Manage Deliveries</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Tracking #</th>
+        <th>Sender</th>
+        <th>Receiver</th>
+        <th>Status</th>
+        <th>Country/City</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody id="deliveryTableBody"></tbody>
+  </table>
+
+</div>
+
+<script>
+let token = localStorage.getItem("adminToken") || "";
+
+// ------------------ LOGIN ------------------ //
+document.getElementById("loginBtn").addEventListener("click", async () => {
+  const username = document.getElementById("username").value;
+  const password = document.getElementById("password").value;
+
+  try {
+    const res = await fetch("/admin/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username, password })
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || "Login failed");
+
+    token = data.token;
+    localStorage.setItem("adminToken", token);
+    document.getElementById("loginDiv").style.display = "none";
+    document.getElementById("adminDiv").style.display = "block";
+    loadDeliveries();
+  } catch(err) {
+    document.getElementById("loginMsg").textContent = err.message;
+  }
+});
+
+// ------------------ CREATE DELIVERY ------------------ //
+document.getElementById("createBtn").addEventListener("click", async () => {
+  const body = {
+    trackingNumber: document.getElementById("trackingNumber").value,
+    senderName: document.getElementById("senderName").value,
+    receiverName: document.getElementById("receiverName").value,
+    status: document.getElementById("statusCreate").value,
+    estimatedDelivery: document.getElementById("estimatedDelivery").value
+  };
+  try {
+    const res = await fetch("/deliveries", {
+      method: "POST",
+      headers: { 
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + token
+      },
+      body: JSON.stringify(body)
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || "Create failed");
+
+    document.getElementById("createMsg").textContent = "Delivery created!";
+    loadDeliveries();
+  } catch(err) {
+    document.getElementById("createMsg").style.color = "red";
+    document.getElementById("createMsg").textContent = err.message;
+  }
+});
+
+// ------------------ LOAD DELIVERIES ------------------ //
+async function loadDeliveries() {
+  try {
+    const res = await fetch("/deliveries", {
+      headers: { "Authorization": "Bearer " + token }
+    });
+    const deliveries = await res.json();
+
+    const tbody = document.getElementById("deliveryTableBody");
+    tbody.innerHTML = "";
+
+    deliveries.forEach(delivery => {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td>${delivery.trackingNumber}</td>
+        <td>${delivery.senderName}</td>
+        <td>${delivery.receiverName}</td>
+        <td>${delivery.status}</td>
+        <td>
+          <select data-id-country="${delivery.trackingNumber}" class="countrySelect">
+            <option value="">Select Country</option>
+          </select>
+          <select data-id-city="${delivery.trackingNumber}" class="citySelect">
+            <option value="">Select City</option>
+          </select>
+        </td>
+        <td>
+          <button data-id-update="${delivery.trackingNumber}">Add History</button>
+          <button data-id-delete="${delivery.trackingNumber}">Delete</button>
+        </td>
+      `;
+      tbody.appendChild(tr);
+    });
+
+    loadCountries(); // populate country dropdowns
+  } catch(err) {
+    console.error(err);
+  }
+}
+
+// ------------------ DELETE & UPDATE ------------------ //
+document.addEventListener("click", async (e) => {
+  if (e.target.dataset.idDelete) {
+    const confirmDelete = confirm("Delete this delivery?");
+    if (!confirmDelete) return;
+
+    const trackingNumber = e.target.dataset.idDelete;
+    try {
+      const res = await fetch(`/deliveries/${trackingNumber}`, {
+        method: "DELETE",
+        headers: { "Authorization": "Bearer " + token }
+      });
+      if (!res.ok) throw new Error("Delete failed");
+      loadDeliveries();
+    } catch(err) { alert(err.message); }
+  }
+
+  if (e.target.dataset.idUpdate) {
+    const trackingNumber = e.target.dataset.idUpdate;
+    const country = document.querySelector(`select[data-id-country="${trackingNumber}"]`).value;
+    const city = document.querySelector(`select[data-id-city="${trackingNumber}"]`).value;
+    const location = country && city ? `${city}, ${country}` : "";
+
+    try {
+      const res = await fetch(`/deliveries/${trackingNumber}`, {
+        method: "PATCH",
+        headers: { 
+          "Content-Type": "application/json",
+          "Authorization": "Bearer " + token
+        },
+        body: JSON.stringify({ status: "Updated", location })
+      });
+      if (!res.ok) throw new Error("Update failed");
+      loadDeliveries();
+    } catch(err) { alert(err.message); }
+  }
+});
+
+// ------------------ LOAD COUNTRIES & CITIES ------------------ //
+async function loadCountries() {
+  try {
+    const res = await fetch("/countries", {
+      headers: { "Authorization": "Bearer " + token }
+    });
+    const countries = await res.json();
+    document.querySelectorAll(".countrySelect").forEach(select => {
+      select.innerHTML = `<option value="">Select Country</option>`;
+      countries.forEach(c => {
+        const opt = document.createElement("option");
+        opt.value = c;
+        opt.textContent = c;
+        select.appendChild(opt);
+      });
+    });
+  } catch(err) { console.error(err); }
+}
+
+document.addEventListener("change", (e) => {
+  if (e.target.classList.contains("countrySelect")) {
+    const row = e.target.closest("tr");
+    const citySelect = row.querySelector(".citySelect");
+    const country = e.target.value;
+    loadCitiesForCountry(country, citySelect);
+  }
+});
+
+async function loadCitiesForCountry(country, citySelect) {
+  if (!country) { citySelect.innerHTML = "<option value=''>Select City</option>"; return; }
+  try {
+    const res = await fetch(`/cities/${country}`, {
+      headers: { "Authorization": "Bearer " + token }
+    });
+    const cities = await res.json();
+    citySelect.innerHTML = "<option value=''>Select City</option>";
+    cities.forEach(city => {
+      const opt = document.createElement("option");
+      opt.value = city;
+      opt.textContent = city;
+      citySelect.appendChild(opt);
+    });
+  } catch(err) { console.error(err); }
+}
+</script>
+</body>
+</html>

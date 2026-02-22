@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Track Your Delivery</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; background: #f9f9f9; }
+    h1 { text-align: center; }
+    .tracking-container { max-width: 600px; margin: 0 auto; background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+    input[type="text"] { width: 80%; padding: 8px; margin-right: 5px; border-radius: 4px; border: 1px solid #ccc; }
+    button { padding: 8px 12px; border: none; background: #007bff; color: white; border-radius: 4px; cursor: pointer; }
+    button:hover { background: #0056b3; }
+    .progress-bar { display: flex; justify-content: space-between; margin: 20px 0; }
+    .step { text-align: center; width: 20%; position: relative; }
+    .step:before { content: ''; position: absolute; top: 15px; left: -50%; width: 100%; height: 4px; background: #ccc; z-index: -1; }
+    .step:first-child:before { display: none; }
+    .circle { width: 30px; height: 30px; border-radius: 50%; background: #ccc; margin: 0 auto; line-height: 30px; color: white; }
+    .active .circle { background: #28a745; }
+    .history { margin-top: 20px; }
+    .history-item { padding: 8px; border-bottom: 1px solid #eee; }
+  </style>
+</head>
+<body>
+
+  <h1>Track Your Delivery</h1>
+
+  <div class="tracking-container">
+    <div>
+      <input type="text" id="trackingNumberInput" placeholder="Enter Tracking Number">
+      <button id="trackBtn">Track</button>
+    </div>
+
+    <div class="progress-bar" id="progressBar">
+      <div class="step" data-status="Created">
+        <div class="circle">1</div>
+        <div>Created</div>
+      </div>
+      <div class="step" data-status="Dispatched">
+        <div class="circle">2</div>
+        <div>Dispatched</div>
+      </div>
+      <div class="step" data-status="In Transit">
+        <div class="circle">3</div>
+        <div>In Transit</div>
+      </div>
+      <div class="step" data-status="Out for Delivery">
+        <div class="circle">4</div>
+        <div>Out for Delivery</div>
+      </div>
+      <div class="step" data-status="Delivered">
+        <div class="circle">5</div>
+        <div>Delivered</div>
+      </div>
+    </div>
+
+    <div class="history" id="history"></div>
+  </div>
+
+  <script>
+    const trackBtn = document.getElementById('trackBtn');
+    const trackingInput = document.getElementById('trackingNumberInput');
+    const historyContainer = document.getElementById('history');
+    const steps = Array.from(document.querySelectorAll('.step'));
+
+    trackBtn.addEventListener('click', async () => {
+      const trackingNumber = trackingInput.value.trim();
+      if (!trackingNumber) {
+        alert("Please enter a tracking number");
+        return;
+      }
+
+      try {
+        const res = await fetch(`http://localhost:3000/deliveries/${trackingNumber}`);
+        if (!res.ok) throw new Error("Delivery not found");
+        const delivery = await res.json();
+
+        // Update progress bar
+        const currentStatus = delivery.status;
+        steps.forEach(step => {
+          if (step.dataset.status === currentStatus || 
+              ['Created','Dispatched','In Transit','Out for Delivery','Delivered'].indexOf(step.dataset.status) < 
+              ['Created','Dispatched','In Transit','Out for Delivery','Delivered'].indexOf(currentStatus)) {
+            step.classList.add('active');
+          } else {
+            step.classList.remove('active');
+          }
+        });
+
+        // Show tracking history
+        historyContainer.innerHTML = "<h3>Tracking History:</h3>";
+        delivery.trackingHistory.slice().reverse().forEach(item => {
+          const div = document.createElement('div');
+          div.className = "history-item";
+          div.textContent = `${new Date(item.date).toLocaleString()} - ${item.location} - ${item.status}`;
+          historyContainer.appendChild(div);
+        });
+
+      } catch(err) {
+        alert(err.message);
+        historyContainer.innerHTML = "";
+        steps.forEach(step => step.classList.remove('active'));
+      }
+    });
+  </script>
+
+</body>
+</html>
