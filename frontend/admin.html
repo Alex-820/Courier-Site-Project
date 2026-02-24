@@ -5,23 +5,41 @@
 <title>Admin Panel - Vertex Express</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@18.1.1/build/css/intlTelInput.min.css">
 <style>
-body { font-family: Arial, sans-serif; margin: 20px; }
-input, select, textarea { padding: 5px; margin: 3px 0; width: 200px; }
-button { padding: 5px 10px; margin: 2px; }
-table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+/* ===== BASE ===== */
+body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 0; background: #f4f6f8; color: #333; }
+h1,h2 { margin: 0 0 15px 0; color: #003366; }
+input, select, textarea { padding: 8px; margin: 5px 0; width: 100%; box-sizing: border-box; border-radius: 4px; border: 1px solid #ccc; }
+button { padding: 8px 15px; margin: 5px 0; border:none; border-radius:4px; cursor:pointer; background:#003366; color:white; font-weight:bold; }
+button:hover { background:#0055a5; }
+fieldset { border:1px solid #ddd; padding:15px; border-radius:6px; margin-bottom:20px; background:white; }
+legend { font-weight:bold; }
+table { width: 100%; border-collapse: collapse; margin-top: 10px; background:white; border-radius:6px; overflow:hidden; }
 th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+th { background:#003366; color:white; }
+.content-table input { width: 100%; }
 .autocomplete-list { border: 1px solid #aaa; max-height: 120px; overflow-y: auto; background: #fff; position: absolute; z-index: 1000; width: 200px; }
 .autocomplete-list div { padding: 4px; cursor: pointer; }
 .autocomplete-list div:hover { background: #eee; }
-.content-table input { width: 120px; }
 #specialHandlingInput { display: none; }
-#loginForm { max-width: 400px; margin:auto; display:none; border:1px solid #ccc; padding:20px; border-radius:8px; }
-#adminContent { display:none; }
+#loginForm { max-width: 400px; margin:auto; display:none; background:white; padding:20px; border-radius:8px; box-shadow:0 4px 15px rgba(0,0,0,0.1);}
+#adminContent { display:none; padding:20px; }
+/* ===== MODERN BRANDING ===== */
+.admin-header { background:#003366; color:white; padding:15px; text-align:center; font-size:22px; font-weight:bold; position:relative; }
+.watermark { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%) rotate(-30deg); font-size:120px; font-weight:bold; color:#003366; opacity:0.05; pointer-events:none; 
+white-space:nowrap; }
+.feedback { position: fixed; top: 20px; right: 20px; background:#003366; color:white; padding:12px 20px; border-radius:6px; box-shadow:0 4px 12px rgba(0,0,0,0.15); display:none; z-index:10000; 
+font-weight:bold; }
 </style>
 </head>
 <body>
 
-<h1>Vertex Express Admin Panel</h1>
+<div class="admin-header">
+  Vertex Express Admin Panel
+  <div class="watermark">VERTEX</div>
+</div>
+
+<!-- Feedback Message -->
+<div id="feedback" class="feedback"></div>
 
 <!-- Login Form -->
 <div id="loginForm">
@@ -130,21 +148,16 @@ let allCities = [];
 const tokenKey = "adminToken";
 const loginForm = document.getElementById("loginForm");
 const adminContent = document.getElementById("adminContent");
+const feedback = document.getElementById("feedback");
 
 function showLogin(){ loginForm.style.display="block"; adminContent.style.display="none"; }
 function showAdmin(){ loginForm.style.display="none"; adminContent.style.display="block"; }
 
 async function checkToken(){
   const token = localStorage.getItem(tokenKey);
-  if(!token){
-    showLogin();
-    return;
-  }
-  // try to load deliveries to see if token works
+  if(!token){ showLogin(); return; }
   try{
-    const res = await fetch("/admin/deliveries", {
-      headers: { "Authorization": `Bearer ${token}` }
-    });
+    const res = await fetch("/admin/deliveries", { headers: { "Authorization": `Bearer ${token}` } });
     if(!res.ok) { showLogin(); localStorage.removeItem(tokenKey); return; }
     deliveries = await res.json();
     renderDeliveries();
@@ -152,23 +165,32 @@ async function checkToken(){
   }catch(err){ console.error(err); showLogin(); }
 }
 
-document.getElementById("loginBtn").addEventListener("click", async ()=>{
-  const username = document.getElementById("username").value.trim();
-  const password = document.getElementById("password").value.trim();
-  if(!username || !password) return alert("Enter username & password");
-
-  try{
-    const res = await fetch("/admin/login", {
-      method:"POST",
-      headers: { "Content-Type":"application/json" },
-      body: JSON.stringify({username,password})
-    });
-    const data = await res.json();
-    if(!res.ok) return alert(data.message||"Login failed");
-    localStorage.setItem(tokenKey, data.token);
-    checkToken();
-  }catch(err){ console.error(err); alert("Login error"); }
+// Login button listener
+document.addEventListener("DOMContentLoaded",()=>{
+  document.getElementById("loginBtn").addEventListener("click", async ()=>{
+    const username = document.getElementById("username").value.trim();
+    const password = document.getElementById("password").value.trim();
+    if(!username || !password) return alert("Enter username & password");
+    try{
+      const res = await fetch("/admin/login", {
+        method:"POST",
+        headers: { "Content-Type":"application/json" },
+        body: JSON.stringify({username,password})
+      });
+      const data = await res.json();
+      if(!res.ok) return alert(data.message||"Login failed");
+      localStorage.setItem(tokenKey, data.token);
+      checkToken();
+    }catch(err){ console.error(err); alert("Login error"); }
+  });
 });
+
+// ------------------ FEEDBACK ------------------
+function showFeedback(msg, duration=3000){
+  feedback.innerText = msg;
+  feedback.style.display = "block";
+  setTimeout(()=>{ feedback.style.display = "none"; }, duration);
+}
 
 // ------------------ ADD / REMOVE ROWS ------------------
 function addRow(){
@@ -308,7 +330,7 @@ document.getElementById("createDeliveryForm").addEventListener("submit", async e
     });
     const data=await res.json();
     if(!res.ok) { alert(data.message||"Failed to create"); return; }
-    alert("Delivery created with tracking: "+data.trackingNumber);
+    showFeedback("Delivery created! Tracking: " + data.trackingNumber);
     loadDeliveries();
     document.getElementById("createDeliveryForm").reset();
     itiSender.setNumber(""); itiReceiver.setNumber("");
@@ -322,9 +344,7 @@ async function loadDeliveries(){
   const token = localStorage.getItem(tokenKey);
   if(!token) { showLogin(); return; }
   try{
-    const res = await fetch("/admin/deliveries",{
-      headers:{ "Authorization": `Bearer ${token}` }
-    });
+    const res = await fetch("/admin/deliveries",{ headers:{ "Authorization": `Bearer ${token}` } });
     if(!res.ok) { showLogin(); localStorage.removeItem(tokenKey); return; }
     deliveries = await res.json();
     renderDeliveries();
