@@ -488,8 +488,8 @@ footer{
 const deliveries = [
   {
     trackingNumber: "VTX7845123690",
-    carrier: "International Express",
-    service: "Priority Air Freight",
+    carrier: "Vertex Express",
+    service: "International Priority",
 
     status: "In Transit",
     statusCode: "IT",
@@ -512,13 +512,11 @@ const deliveries = [
         city: "Los Angeles",
         state: "CA",
         country: "United States",
-        postalCode: "90001"
       },
       destination: {
         city: "Berlin",
         state: null,
         country: "Germany",
-        postalCode: "10115"
       }
     },
 
@@ -597,7 +595,6 @@ function animateCounters(){
 animateCounters();
 setInterval(()=>{counters.forEach(c=>c.innerText="0");animateCounters();},3000);
 
-<script>
 function trackPackage() {
   const trackingInput = document.querySelector(".tracking-card input").value.trim().toUpperCase();
   if (!trackingInput) return alert("Enter a tracking number");
