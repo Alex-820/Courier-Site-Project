@@ -3,286 +3,586 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Vertex Express - Home</title>
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<link href="https://fonts.googleapis.com/css2?family=Libre+Barcode+128&display=swap" rel="stylesheet">
+<title>Vertex Express</title>
 
 <style>
-body { font-family: Arial, sans-serif; margin:0; padding:0; background:#f5f5f5; color:#333; }
+:root{
+  --brand-purple:#4B0082;
+  --brand-orange:#FF6A00;
+  --gray:#444;
+  --light:#f4f6f9;
+  --white:#ffffff;
+}
 
-header { background:#003366; color:white; padding:15px 30px; display:flex; justify-content:space-between; align-items:center; }
-header h1 { font-size:24px; }
-header nav a { color:white; margin-left:20px; text-decoration:none; font-weight:bold; }
+body{
+  margin:0;
+  font-family:'Segoe UI',sans-serif;
+  background:var(--light);
+  color:var(--gray);
+  overflow-x:hidden;
+}
 
-.hero { background:#0055a5; color:white; padding:80px 20px 60px; text-align:center; }
-.hero input { padding:12px; width:250px; border:none; border-radius:4px; }
-.hero button { padding:12px 20px; border:none; border-radius:4px; background:#ffcc00; color:#003366; font-weight:bold; cursor:pointer; }
+h1,h2,h3{color:var(--brand-purple);}
 
-.quick-actions { display:flex; flex-wrap:wrap; justify-content:center; gap:20px; margin:40px 0; }
-.action-card { background:white; padding:30px 20px; border-radius:10px; box-shadow:0 4px 15px rgba(0,0,0,0.1); width:180px; cursor:pointer; text-align:center; }
-
-.features { display:flex; flex-wrap:wrap; justify-content:center; gap:30px; margin-bottom:60px; }
-.feature { background:white; padding:20px; border-radius:8px; width:220px; text-align:center; box-shadow:0 2px 10px rgba(0,0,0,0.08); }
-
-footer { background:#003366; color:white; text-align:center; padding:25px 20px; font-size:14px; }
-
-/* ===== LUXURY RECEIPT ===== */
-#trackingResult {
-  display:none;
-  margin:40px auto;
+/* NAV */
+nav{
   background:white;
-  padding:40px;
-  border-radius:8px;
-  box-shadow:0 6px 25px rgba(0,0,0,0.15);
-  max-width:1000px;
-  position:relative;
-  overflow:hidden;
-}
-
-.receipt-watermark {
-  position:absolute;
-  top:50%;
-  left:50%;
-  transform:translate(-50%,-50%);
-  font-size:120px;
-  font-weight:bold;
-  color:#003366;
-  opacity:0.04;
-  pointer-events:none;
-  white-space:nowrap;
-}
-
-.receipt-header {
   display:flex;
   justify-content:space-between;
-  border-bottom:2px solid #003366;
-  padding-bottom:15px;
-  margin-bottom:20px;
+  align-items:center;
+  padding:15px 60px;
+  box-shadow:0 3px 12px rgba(0,0,0,0.05);
+  position:sticky;
+  top:0;
+  z-index:1000;
 }
 
-.tracking-number {
+/* === Modern Logo Upgrade === */
+.logo{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  font-size:unset;
+  font-weight:unset;
+}
+
+.logo-mark{
+  width:40px;
+  height:40px;
+  background:linear-gradient(135deg,var(--brand-purple),var(--brand-orange));
+  border-radius:10px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:white;
+  font-weight:700;
+  font-size:18px;
+  box-shadow:0 6px 16px rgba(0,0,0,0.15);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.logo-mark:hover{
+  transform: scale(1.1) rotate(5deg);
+  box-shadow:0 10px 20px rgba(0,0,0,0.2);
+}
+
+.logo-text{
+  display:flex;
+  flex-direction:column;
+  line-height:1;
+}
+
+.logo-text .brand-name{
   font-size:20px;
+  font-weight:700;
+  color:var(--brand-purple);
+  letter-spacing:0.5px;
+  transition: color 0.3s ease;
+}
+
+.logo-text .brand-sub{
+  font-size:11px;
   letter-spacing:3px;
-  font-weight:bold;
-  color:#003366;
-}
-
-.barcode {
-  font-family:'Libre Barcode 128', cursive;
-  font-size:42px;
-}
-
-.receipt-section-title {
-  margin-top:25px;
-  font-size:14px;
-  font-weight:bold;
   text-transform:uppercase;
-  color:#003366;
-  border-bottom:1px solid #ddd;
-  padding-bottom:5px;
+  color:var(--brand-orange);
+  font-weight:600;
+  transition: color 0.3s ease;
 }
 
-.receipt-table {
-  width:100%;
-  border-collapse:collapse;
-  margin-top:10px;
+.logo:hover .brand-name {
+  color:#6a00ff;
 }
 
-.receipt-table th,
-.receipt-table td {
-  border:1px solid #e1e4e8;
-  padding:8px;
+.logo:hover .brand-sub {
+  color:#ff8500;
+}
+
+nav a{
+  margin-left:25px;
+  text-decoration:none;
+  color:var(--gray);
+  font-weight:500;
+}
+nav a:hover{color:var(--brand-orange);}
+
+/* HEADER */
+header{
+  background:linear-gradient(rgba(75,0,130,0.9),rgba(255,106,0,0.85)),
+              url('images/courier-picture.jpeg') center/cover no-repeat;
+  color:white;
+  text-align:center;
+  padding:40px 20px 60px;
+}
+
+header h1{font-size:30px;margin-bottom:8px;}
+header p{font-size:16px;}
+
+.accent-line{
+  width:120px;
+  height:4px;
+  background:var(--brand-orange);
+  margin:15px auto;
+}
+
+/* TRACKING */
+.tracking-card{
+  background:white;
+  max-width:750px;
+  margin:40px auto 60px;
+  padding:40px;
+  border-radius:12px;
+  box-shadow:0 25px 50px rgba(0,0,0,0.15);
+  text-align:center;
+  border-top:5px solid var(--brand-orange);
+}
+
+.tracking-card input{
+  padding:14px;
+  width:60%;
+  border-radius:6px;
+  border:1px solid #ddd;
+}
+
+.tracking-card button{
+  padding:14px 25px;
+  background:var(--brand-orange);
+  border:none;
+  color:white;
+  border-radius:6px;
+  cursor:pointer;
+  font-weight:bold;
+}
+.tracking-card button:hover{background:var(--brand-purple);}
+
+.tracking-steps{
+  display:flex;
+  justify-content:space-between;
+  margin-top:30px;
   font-size:13px;
 }
 
-.receipt-table th {
-  background:#f5f7fa;
-  text-align:left;
+.step{
+  flex:1;
+  padding:10px;
+  border-bottom:3px solid #ccc;
+}
+.step.active{
+  border-color:var(--brand-orange);
+  color:var(--brand-purple);
+  font-weight:bold;
 }
 
-.receipt-footer {
-  margin-top:40px;
-  padding-top:15px;
-  border-top:1px solid #ddd;
-  font-size:12px;
+#live-update{
+  margin-top:15px;
+  font-size:14px;
+  color:var(--brand-purple);
+}
+
+/* STATS */
+.stats{
+  background:linear-gradient(90deg,var(--brand-purple),var(--brand-orange));
+  color:white;
+  padding:50px 20px;
+  display:flex;
+  justify-content:space-around;
+  flex-wrap:wrap;
   text-align:center;
-  color:#555;
+}
+.stat-number{
+  font-size:38px;
+  font-weight:bold;
+}
+
+/* SECTIONS */
+section{
+  max-width:1100px;
+  margin:80px auto;
+  padding:20px;
+}
+
+/* SERVICES */
+.service-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+  gap:25px;
+}
+.service-card{
+  background:white;
+  border-radius:12px;
+  box-shadow:0 12px 28px rgba(0,0,0,0.08);
+  text-align:center;
+  padding:30px 20px;
+  transition:0.3s;
+}
+.service-card:hover{
+  transform:translateY(-8px);
+}
+.service-icon{
+  font-size:40px;
+  margin-bottom:15px;
+}
+
+/* WHY VERTEX */
+.why-vertex{
+  background:white;
+  border-radius:14px;
+  padding:60px 30px;
+  box-shadow:0 15px 40px rgba(0,0,0,0.07);
+}
+
+.why-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+  gap:30px;
+  margin-top:40px;
+}
+
+.why-card{
+  padding:25px;
+  border-left:4px solid var(--brand-orange);
+  transition:0.3s;
+}
+.why-card:hover{
+  background:#fafafa;
+  transform:translateY(-5px);
+}
+
+/* TRUST BADGES */
+.trust{
+  text-align:center;
+  margin-top:50px;
+}
+.trust span{
+  display:inline-block;
+  margin:10px 20px;
+  font-weight:bold;
+  color:var(--brand-purple);
+}
+
+/* PICKUP */
+#pickup{
+  background:white;
+  border-radius:12px;
+  padding:40px;
+  box-shadow:0 12px 28px rgba(0,0,0,0.08);
+}
+
+#pickup input, #pickup select{
+  width:100%;
+  padding:10px;
+  margin-bottom:15px;
+  border-radius:6px;
+  border:1px solid #ccc;
+}
+
+#pickup button{
+  background:var(--brand-orange);
+  color:white;
+  padding:12px 25px;
+  border:none;
+  border-radius:6px;
+  font-weight:bold;
+  cursor:pointer;
+}
+#pickup button:hover{background:var(--brand-purple);}
+
+footer{
+  background:var(--brand-purple);
+  color:white;
+  text-align:center;
+  padding:25px;
+}
+
+/* === Logo Responsive Tweaks === */
+@media (max-width: 768px) {
+  .logo {
+    gap:8px;
+  }
+
+  .logo-mark {
+    width:32px;
+    height:32px;
+    font-size:16px;
+  }
+
+  .logo-text .brand-name {
+    font-size:16px;
+  }
+
+  .logo-text .brand-sub {
+    font-size:9px;
+    letter-spacing:2px;
+  }
+
+  nav {
+    padding:12px 20px;
+  }
+
+  nav a {
+    margin-left:15px;
+    font-size:14px;
+  }
+}
+/* === Micro Animations: Cards === */
+.service-card, .why-card {
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+}
+
+.service-card:hover, .why-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
 }
 </style>
 </head>
 
 <body>
 
+<nav>
+  <div class="logo">
+    <div class="logo-mark">V</div>
+    <div class="logo-text">
+      <div class="brand-name">Vertex</div>
+      <div class="brand-sub">Express</div>
+    </div>
+  </div>
+  <div>
+    <a href="#services">Services</a>
+    <a href="#pickup">Pickup</a>
+    <a href="#contact">Contact</a>
+  </div>
+</nav>
+
 <header>
-  <h1>Vertex Express</h1>
-  <nav>
-    <a href="#">Home</a>
-    <a href="#">Tracking</a>
-    <a href="#">Contact</a>
-  </nav>
+  <h1>Fast. Reliable. Worldwide.</h1>
+  <p>Enterprise-grade global logistics solutions</p>
+  <div class="accent-line"></div>
+  <!-- Floating hero image -->
+  <img src="images/Worker.webp" alt="Delivery worker" style="
+       position:absolute;
+       right:40px;
+       top:20px;
+       width:150px;
+       border-radius:12px;
+       box-shadow:0 8px 20px rgba(0,0,0,0.2);
+       display:block;
+       z-index:10;">
 </header>
 
-<section class="hero">
-  <h2>Track Your Package</h2>
-  <p>Enter your tracking number below</p>
-  <input type="text" id="trackingInput" placeholder="Enter Tracking Number">
-  <button id="trackBtn">Track</button>
+<section id="services">
+  <h2>Our Services</h2>
+  <div class="service-grid">
+    <div class="service-card">
+      <img src="images/Companyworker.png" alt="Team working" style="
+           width:100%;
+           border-radius:12px;
+           margin-bottom:15px;
+           object-fit:cover;">
+      <div class="service-icon">🚚</div>
+      <h3>Standard Delivery</h3>
+      <p>Affordable and dependable shipping solutions.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">⚡</div>
+      <h3>Express Delivery</h3>
+      <p>Priority handling with faster transit times.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">✈️</div>
+      <h3>International Priority</h3>
+      <p>Seamless cross-border logistics worldwide.</p>
+    </div>
+  </div>
 </section>
 
-<div id="trackingResult"></div>
-
-<section class="quick-actions">
-  <div class="action-card" onclick="document.getElementById('trackingInput').focus()">
-    <i class="fas fa-box"></i>
-    <span>Track a Package</span>
+<section class="why-vertex">
+  <h2>Why Ship With Vertex Express?</h2>
+  <p>Innovative solutions for reliability & speed.</p>
+  
+  <div style="display:flex; gap:30px; flex-wrap:wrap; align-items:center;">
+    <div class="why-grid" style="flex:1;">
+      <div class="why-card">
+        <h3>Premium Shipping at Professional Rates</h3>
+        <p>Reliable delivery and careful handling — on time, every time.</p>
+      </div>
+      <div class="why-card">
+        <h3>We Ship Everywhere</h3>
+        <p>From major cities to remote regions worldwide.</p>
+      </div>
+      <div class="why-card">
+        <h3>Reliable Two-Day Shipping</h3>
+        <p>Flat-rate express options across key regions.</p>
+      </div>
+      <div class="why-card">
+        <h3>Secure & Swift Arrival</h3>
+        <p>Safe handling and optimized transportation network.</p>
+      </div>
+    </div>
+    <img src="images/receivingdelivery.jpg" alt="Receiving package" style="
+         width:300px;
+         border-radius:12px;
+         box-shadow:0 8px 20px rgba(0,0,0,0.15);
+         flex-shrink:0;">
   </div>
-  <div class="action-card" onclick="togglePickupForm()">
-    <i class="fas fa-truck"></i>
-    <span>Schedule Pickup</span>
+
+  <div class="trust">
+    <span>ISO Certified</span>
+    <span>Global Logistics Network</span>
+    <span>24/7 Support</span>
+    <span>Enterprise Trusted</span>
+  </div>
+</section>
+</header>
+
+<div class="tracking-card">
+  <h2>Track Your Shipment</h2>
+  <input type="text" placeholder="Enter Tracking Number">
+  <button onclick="trackPackage()">Track</button>
+
+  <div id="tracking-status" class="tracking-steps">
+    <div class="step">Order Received</div>
+    <div class="step">In Warehouse</div>
+    <div class="step">In Transit</div>
+    <div class="step">Out for Delivery</div>
+    <div class="step">Delivered</div>
+  </div>
+  <div id="live-update"></div>
+</div>
+
+<div class="stats">
+  <div>
+    <div class="stat-number" data-target="10000">0</div>
+    <div>Packages Delivered</div>
+  </div>
+  <div>
+    <div class="stat-number" data-target="200">0</div>
+    <div>Countries Covered</div>
+  </div>
+  <div>
+    <div class="stat-number">24/7</div>
+    <div>Live Tracking</div>
+  </div>
+  <div>
+    <div class="stat-number">100%</div>
+    <div>Secure Handling</div>
+  </div>
+</div>
+
+<section id="services">
+  <h2>Our Services</h2>
+  <div class="service-grid">
+    <div class="service-card">
+      <div class="service-icon">🚚</div>
+      <h3>Standard Delivery</h3>
+      <p>Affordable and dependable shipping solutions.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">⚡</div>
+      <h3>Express Delivery</h3>
+      <p>Priority handling with faster transit times.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">✈️</div>
+      <h3>International Priority</h3>
+      <p>Seamless cross-border logistics worldwide.</p>
+    </div>
   </div>
 </section>
 
-<section class="features">
-  <div class="feature"><i class="fas fa-shipping-fast"></i><h3>Fast Delivery</h3></div>
-  <div class="feature"><i class="fas fa-lock"></i><h3>Secure Packages</h3></div>
-  <div class="feature"><i class="fas fa-headset"></i><h3>24/7 Support</h3></div>
+<section class="why-vertex">
+  <h2>Why Ship With Vertex Express?</h2>
+  <p>Innovative solutions for reliability & speed.</p>
+
+  <div class="why-grid">
+    <div class="why-card">
+      <h3>Premium Shipping at Professional Rates</h3>
+      <p>Reliable delivery and careful handling — on time, every time.</p>
+    </div>
+    <div class="why-card">
+      <h3>We Ship Everywhere</h3>
+      <p>From major cities to remote regions worldwide.</p>
+    </div>
+    <div class="why-card">
+      <h3>Reliable Two-Day Shipping</h3>
+      <p>Flat-rate express options across key regions.</p>
+    </div>
+    <div class="why-card">
+      <h3>Secure & Swift Arrival</h3>
+      <p>Safe handling and optimized transportation network.</p>
+    </div>
+  </div>
+
+  <div class="trust">
+    <span>ISO Certified</span>
+    <span>Global Logistics Network</span>
+    <span>24/7 Support</span>
+    <span>Enterprise Trusted</span>
+  </div>
+</section>
+
+<section id="pickup">
+  <h2>Schedule a Pickup</h2>
+  <form id="pickupForm">
+    <input type="text" placeholder="Full Name" required>
+    <input type="tel" placeholder="Phone Number" required>
+    <input type="text" placeholder="Pickup Address" required>
+    <input type="date" required>
+    <input type="time" required>
+    <select>
+      <option>Home</option>
+      <option>Office</option>
+    </select>
+    <button type="submit">Request Pickup</button>
+  </form>
+</section>
+
+<section id="contact">
+<h2>Contact Us</h2>
+<p>Email: support@vertexexpress.com | Phone: +1 234 567 890</p>
 </section>
 
 <footer>
-  &copy; 2013 Vertex Express | All rights reserved
+©️ 2026 Vertex Express | All Rights Reserved
 </footer>
 
 <script>
-document.getElementById("trackBtn").addEventListener("click", async ()=>{
-  const tn = document.getElementById("trackingInput").value.trim();
-  if(!tn) return alert("Enter tracking number");
-
-  try{
-    const res = await fetch(`/admin/deliveries/${tn}`);
-    if(!res.ok){
-      document.getElementById("trackingResult").style.display="block";
-      document.getElementById("trackingResult").innerHTML="<b>Tracking number not found.</b>";
-      return;
+const counters=document.querySelectorAll(".stat-number[data-target]");
+function animateCounters(){
+  counters.forEach(counter=>{
+    const target=+counter.getAttribute("data-target");
+    const start=performance.now();
+    function update(time){
+      const progress=Math.min((time-start)/1000,1);
+      counter.innerText=Math.floor(target*progress).toLocaleString()+"+";
+      if(progress<1)requestAnimationFrame(update);
+      else counter.innerText=target.toLocaleString()+"+";
     }
+    requestAnimationFrame(update);
+  });
+}
+animateCounters();
+setInterval(()=>{counters.forEach(c=>c.innerText="0");animateCounters();},3000);
 
-    const d = await res.json();
-    const result = document.getElementById("trackingResult");
-
-    let totalValue = 0;
-
-    const contentsRows = d.contents && d.contents.length > 0
-      ? d.contents.map(item=>{
-          const itemTotal = (item.quantity||0)*(item.estimatedValue||0);
-          totalValue += itemTotal;
-          return `
-            <tr>
-              <td>${item.description}</td>
-              <td>${item.quantity}</td>
-              <td>${item.estimatedValue}</td>
-              <td>${itemTotal}</td>
-            </tr>`;
-        }).join("")
-      : `<tr><td colspan="4">No contents listed.</td></tr>`;
-
-    result.innerHTML = `
-      <div class="receipt-watermark">VERTEX EXPRESS</div>
-
-      <div class="receipt-header">
-        <div>
-          <h2 style="margin:0;color:#003366;">Vertex Express</h2>
-          <div>Premium Global Logistics & Secure Delivery</div>
-          <div style="font-size:12px;color:#555;">From Click to Your Doorstep 🚪</div>
-        </div>
-        <div>
-          <div style="font-weight:bold;">Shipment Receipt</div>
-          <div class="tracking-number">${d.trackingNumber}</div>
-          <div class="barcode">*${d.trackingNumber}*</div>
-        </div>
-      </div>
-
-      <div class="receipt-section-title">Shipment Overview</div>
-      <table class="receipt-table">
-        <tr><th>Status</th><td>${d.status}</td></tr>
-        <tr><th>Current Location</th><td>${d.currentLocation || "-"}</td></tr>
-        <tr><th>Date Created</th><td>${new Date(d.createdAt).toLocaleString()}</td></tr>
-        <tr><th>Estimated Delivery</th><td>${d.estimatedDelivery ? new Date(d.estimatedDelivery).toLocaleDateString() : "-"}</td></tr>
-      </table>
-
-      <div class="receipt-section-title">Sender Information</div>
-      <table class="receipt-table">
-        <tr><th>Name</th><td>${d.sender.fullName}</td></tr>
-        <tr><th>Address</th><td>${d.sender.address}</td></tr>
-        <tr><th>Phone</th><td>${d.sender.phone}</td></tr>
-        <tr><th>Email</th><td>${d.sender.email}</td></tr>
-        <tr><th>Country</th><td>${d.sender.country}</td></tr>
-      </table>
-
-      <div class="receipt-section-title">Receiver Information</div>
-      <table class="receipt-table">
-        <tr><th>Name</th><td>${d.receiver.fullName}</td></tr>
-        <tr><th>Address</th><td>${d.receiver.address}</td></tr>
-        <tr><th>Phone</th><td>${d.receiver.phone}</td></tr>
-        <tr><th>Email</th><td>${d.receiver.email}</td></tr>
-        <tr><th>Country</th><td>${d.receiver.country}</td></tr>
-      </table>
-
-      <div class="receipt-section-title">Package Details</div>
-      <table class="receipt-table">
-        <tr><th>Weight</th><td>${d.package.weight} kg</td></tr>
-        <tr><th>Type</th><td>${d.package.type || "-"}</td></tr>
-        <tr><th>Service</th><td>${d.package.service || "-"}</td></tr>
-        <tr><th>Signature Required</th><td>${d.package.signatureRequired ? "Yes" : "No"}</td></tr>
-        <tr><th>Saturday Delivery</th><td>${d.package.saturdayDelivery ? "Yes" : "No"}</td></tr>
-      </table>
-
-      <div class="receipt-section-title">Shipment Contents</div>
-      <table class="receipt-table">
-        <thead>
-          <tr><th>Description</th><th>Quantity</th><th>Estimated Value ($)</th><th>Total ($)</th></tr>
-        </thead>
-        <tbody>
-          ${contentsRows}
-          ${totalValue > 0 ? `
-            <tr>
-              <td colspan="3" style="text-align:right;font-weight:bold;">Grand Total</td>
-              <td style="font-weight:bold;">${totalValue}</td>
-            </tr>` : ""}
-        </tbody>
-      </table>
-
-      <div class="receipt-section-title">Tracking History</div>
-      <table class="receipt-table">
-        <thead>
-          <tr><th>Date</th><th>Location</th><th>Status</th></tr>
-        </thead>
-        <tbody>
-          ${
-            d.trackingHistory && d.trackingHistory.length > 0
-            ? d.trackingHistory.map(h=>`
-              <tr>
-                <td>${new Date(h.date).toLocaleString()}</td>
-                <td>${h.location}</td>
-                <td>${h.status}</td>
-              </tr>`).join("")
-            : `<tr><td colspan="3">No tracking history available.</td></tr>`
-          }
-        </tbody>
-      </table>
-
-      <div class="receipt-footer">
-        Vertex Express Global Logistics Ltd.<br>
-        Company Registration No: VX-GL-2048392<br>
-        International Operations Center<br>
-        support@vertexexpress.com
-      </div>
-    `;
-
-    result.style.display="block";
-
-  }catch(err){
-    alert("Error fetching shipment.");
-  }
+function trackPackage(){
+  const steps=document.querySelectorAll(".step");
+  steps.forEach(s=>s.classList.remove("active"));
+  let current=0;
+  const interval=setInterval(()=>{
+    if(current<steps.length){
+      steps[current].classList.add("active");
+      current++;
+    }else clearInterval(interval);
+  },1200);
+}
+/* === Smooth Scroll for Nav Links === */
+document.querySelectorAll('nav a').forEach(link => {
+  link.addEventListener('click', e => {
+    e.preventDefault();
+    const targetId = link.getAttribute('href').slice(1);
+    const targetSection = document.getElementById(targetId);
+    if (targetSection) {
+      targetSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  });
 });
 </script>
 

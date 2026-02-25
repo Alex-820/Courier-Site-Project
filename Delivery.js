@@ -7,6 +7,7 @@ const deliverySchema = new mongoose.Schema({
   receiverAddress: { type: String, required: true },
   packageDetails: { type: String, required: true },
   status: { type: String, default: 'Pending' },
+estimatedDeliveryDate: String // <-- add this line
   createdAt: { type: Date, default: Date.now }
 });
 
