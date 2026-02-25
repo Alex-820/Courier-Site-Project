@@ -485,6 +485,26 @@ footer{
 </footer>
 
 <script>
+// ===== Sample Delivery Data =====
+const deliveries = [
+  {
+    trackingNumber: "VX12345",
+    status: "In Transit",
+    service: "Express Delivery",
+    weight: "2.5kg",
+    origin: "New York, USA",
+    destination: "Toronto, Canada",
+    currentLocation: "Buffalo, NY",
+    estimatedDelivery: "2026-03-01",
+    sender: { name: "John Miller", phone: "+1 202 555 0134" },
+    receiver: { name: "Sarah Thompson", phone: "+1 416 555 0987" },
+    history: [
+      { date: "2026-02-22", location: "New York, USA", description: "Shipment created" },
+      { date: "2026-02-23", location: "New York, USA", description: "Picked up by courier" },
+      { date: "2026-02-24", location: "Buffalo, NY", description: "Arrived at sorting facility" }
+    ]
+  }
+];
 const counters=document.querySelectorAll(".stat-number[data-target]");
 function animateCounters(){
   counters.forEach(counter=>{
@@ -502,36 +522,51 @@ function animateCounters(){
 animateCounters();
 setInterval(()=>{counters.forEach(c=>c.innerText="0");animateCounters();},3000);
 
-function trackPackage(){
-  const steps=document.querySelectorAll(".step");
-  steps.forEach(s=>s.classList.remove("active"));
-  let current=0;
-  const interval=setInterval(()=>{
-    if(current<steps.length){
+function trackPackage() {
+  const trackingInput = document.querySelector(".tracking-card input").value.trim();
+  if(!trackingInput) return alert("Enter a tracking number");
+
+  const steps = document.querySelectorAll(".step");
+  steps.forEach(s => s.classList.remove("active"));
+
+  // Hide previous shipment details
+  const detailsDiv = document.getElementById("shipmentDetails");
+  const detailsContent = document.getElementById("detailsContent");
+  detailsDiv.style.display = "none";
+  detailsContent.innerHTML = "";
+
+  // Find shipment by tracking number
+  const data = deliveries.find(d => d.trackingNumber === trackingInput);
+  if(!data) return alert("Tracking number not found");
+
+  let current = 0;
+  const interval = setInterval(() => {
+    if (current < steps.length) {
       steps[current].classList.add("active");
       current++;
-    }else const detailsDiv = document.getElementById("shipmentDetails");
-const detailsContent = document.getElementById("detailsContent");
+    } else {
+      clearInterval(interval);
 
-detailsDiv.style.display = "block";
+      // Show shipment details
+      detailsDiv.style.display = "block";
+      detailsContent.innerHTML = `
+        <p><strong>Service:</strong> ${data.service}</p>
+        <p><strong>Weight:</strong> ${data.weight}</p>
+        <p><strong>Origin:</strong> ${data.origin}</p>
+        <p><strong>Destination:</strong> ${data.destination}</p>
+        <p><strong>Current Location:</strong> ${data.currentLocation}</p>
+        <p><strong>Estimated Delivery:</strong> ${data.estimatedDelivery}</p>
 
-detailsContent.innerHTML = `
-  <p><strong>Service:</strong> ${data.service}</p>
-  <p><strong>Weight:</strong> ${data.weight}</p>
-  <p><strong>Origin:</strong> ${data.origin}</p>
-  <p><strong>Destination:</strong> ${data.destination}</p>
-  <p><strong>Current Location:</strong> ${data.currentLocation}</p>
-  <p><strong>Estimated Delivery:</strong> ${data.estimatedDelivery}</p>
-
-  <h4 style="margin-top:20px;">Shipment History</h4>
-  ${data.history.map(event => `
-    <div style="margin-bottom:10px; padding:10px; border-left:3px solid #FF6A00;">
-      <strong>${event.date}</strong> — ${event.location}<br>
-      ${event.description}
-    </div>
-  `).join("")}
-`;
-  },1200);
+        <h4 style="margin-top:20px;">Shipment History</h4>
+        ${data.history.map(event => `
+          <div style="margin-bottom:10px; padding:10px; border-left:3px solid var(--brand-orange);">
+            <strong>${event.date}</strong> — ${event.location}<br>
+            ${event.description}
+          </div>
+        `).join("")}
+      `;
+    }
+  }, 1200);
 }
 /* === Smooth Scroll for Nav Links === */
 document.querySelectorAll('nav a').forEach(link => {
