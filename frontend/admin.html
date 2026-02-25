@@ -5,94 +5,197 @@
 <title>Admin Panel - Vertex Express</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@18.1.1/build/css/intlTelInput.min.css">
 <style>
+:root{
+  --brand-purple:#4B0082;
+  --brand-orange:#FF6A00;
+  --light:#f4f6f9;
+  --white:#ffffff;
+  --gray:#444;
+}
+
 /* ===== BASE ===== */
-body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 0; background: #f4f6f8; color: #333; }
-h1,h2 { margin: 0 0 15px 0; color: #E44C4C; }
-input, select, textarea { padding: 8px; margin: 5px 0; width: 100%; box-sizing: border-box; border-radius: 4px; border: 1px solid #ccc; }
-button { padding: 8px 15px; margin: 5px 0; border:none; border-radius:4px; cursor:pointer; background:#E44C4C; color:white; font-weight:bold; }
-button:hover { background:#FF6600; }
-fieldset { border:1px solid #ddd; padding:15px; border-radius:6px; margin-bottom:20px; background:white; }
-legend { font-weight:bold; }
-table { width: 100%; border-collapse: collapse; margin-top: 10px; background:white; border-radius:6px; overflow:hidden; }
-th, td { border: 1px solid #FF6600; padding: 8px; text-align: left; }
-th { background:#E44C4C; color:white; }
-.content-table input { width: 100%; }
-.autocomplete-list { border: 1px solid #aaa; max-height: 120px; overflow-y: auto; background: #fff; position: absolute; z-index: 1000; width: 200px; }
-.autocomplete-list div { padding: 4px; cursor: pointer; }
-.autocomplete-list div:hover { background: #FFD700; }
-#specialHandlingInput { display: none; }
-#loginForm { max-width: 400px; margin:auto; display:none; background:white; padding:20px; border-radius:8px; box-shadow:0 4px 15px rgba(0,0,0,0.1);}
-#adminContent { display:none; padding:20px; }
-/* ===== ARTISTIC LOGO ===== */
-.admin-header {
-  background: white;
-  color: #E44C4C;
-  padding: 20px 0;
-  text-align: center;
-  font-size: 26px;
-  font-weight: bold;
-  position: relative;
-  border-bottom: 3px solid #FFD700;
+body {
+  font-family:'Segoe UI',sans-serif;
+  margin:0;
+  padding:0;
+  background:var(--light);
+  color:var(--gray);
 }
 
-.logo-artistic {
-  display: inline-block;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  position: relative;
+h1,h2 {
+  margin:0 0 15px 0;
+  color:var(--brand-purple);
 }
 
-.logo-artistic .vertex {
-  color: #E44C4C;
-  font-size: 32px;
-  letter-spacing: 2px;
-  position: relative;
+input, select, textarea {
+  padding:10px;
+  margin:6px 0;
+  width:100%;
+  box-sizing:border-box;
+  border-radius:6px;
+  border:1px solid #ddd;
+  transition:0.3s;
 }
 
-.logo-artistic .vertex::after {
-  content: '';
-  display: block;
-  width: 60%;
-  height: 4px;
-  background: #FFD700;
-  margin: 4px auto 0;
-  border-radius: 2px;
+input:focus, select:focus, textarea:focus{
+  border-color:var(--brand-orange);
+  outline:none;
 }
 
-.logo-artistic .express {
-  display: block;
-  color: #FFD700;
-  font-size: 18px;
-  letter-spacing: 1px;
-  margin-top: -6px;
-  font-weight: normal;
+button {
+  padding:10px 18px;
+  margin:6px 0;
+  border:none;
+  border-radius:6px;
+  cursor:pointer;
+  background:var(--brand-orange);
+  color:white;
+  font-weight:bold;
+  transition:0.3s;
 }
 
-.admin-header .watermark {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%) rotate(-30deg);
-  font-size: 120px;
-  font-weight: bold;
-  color: #E44C4C;
-  opacity: 0.05;
-  pointer-events: none;
-  white-space: nowrap;
+button:hover {
+  background:var(--brand-purple);
 }
 
-.feedback { position: fixed; top: 20px; right: 20px; background:#E44C4C; color:white; padding:12px 20px; border-radius:6px; box-shadow:0 4px 12px rgba(0,0,0,0.15); display:none; z-index:10000; 
-font-weight:bold; }
-#cancelUpdateBtn { display: none; background:#a50000; margin-left:10px; }
+fieldset {
+  border:none;
+  padding:20px;
+  border-radius:10px;
+  margin-bottom:25px;
+  background:white;
+  box-shadow:0 10px 25px rgba(0,0,0,0.06);
+}
+
+legend {
+  font-weight:bold;
+  color:var(--brand-purple);
+}
+
+table {
+  width:100%;
+  border-collapse:collapse;
+  margin-top:15px;
+  background:white;
+  border-radius:10px;
+  overflow:hidden;
+  box-shadow:0 10px 25px rgba(0,0,0,0.06);
+}
+
+th, td {
+  padding:10px;
+  text-align:left;
+}
+
+th {
+  background:var(--brand-purple);
+  color:white;
+}
+
+td {
+  border-bottom:1px solid #eee;
+}
+
+/* ===== HEADER (MATCH FRONTEND LOGO) ===== */
+.admin-header{
+  background:white;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  padding:20px 0;
+  box-shadow:0 4px 15px rgba(0,0,0,0.05);
+}
+
+.logo{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.logo-mark{
+  width:40px;
+  height:40px;
+  background:linear-gradient(135deg,var(--brand-purple),var(--brand-orange));
+  border-radius:10px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:white;
+  font-weight:700;
+  font-size:18px;
+  box-shadow:0 6px 16px rgba(0,0,0,0.15);
+  transition:0.3s;
+}
+
+.logo-mark:hover{
+  transform:scale(1.1) rotate(5deg);
+}
+
+.logo-text{
+  display:flex;
+  flex-direction:column;
+  line-height:1;
+}
+
+.brand-name{
+  font-size:20px;
+  font-weight:700;
+  color:var(--brand-purple);
+}
+
+.brand-sub{
+  font-size:11px;
+  letter-spacing:3px;
+  text-transform:uppercase;
+  color:var(--brand-orange);
+  font-weight:600;
+}
+
+/* ===== LOGIN ===== */
+#loginForm{
+  max-width:400px;
+  margin:60px auto;
+  background:white;
+  padding:30px;
+  border-radius:12px;
+  box-shadow:0 20px 40px rgba(0,0,0,0.08);
+}
+
+#adminContent{
+  padding:30px;
+}
+
+/* ===== FEEDBACK ===== */
+.feedback{
+  position:fixed;
+  top:20px;
+  right:20px;
+  background:var(--brand-purple);
+  color:white;
+  padding:14px 20px;
+  border-radius:8px;
+  box-shadow:0 8px 20px rgba(0,0,0,0.15);
+  display:none;
+  z-index:10000;
+  font-weight:bold;
+}
+
+#cancelUpdateBtn{
+  display:none;
+  background:#a50000;
+}
 </style>
 </head>
 <body>
 
 <div class="admin-header">
-  <div class="logo-artistic">
-    <span class="vertex">VERTEX</span>
-    <span class="express">EXPRESS</span>
+  <div class="logo">
+    <div class="logo-mark">V</div>
+    <div class="logo-text">
+      <div class="brand-name">Vertex</div>
+      <div class="brand-sub">Express</div>
+    </div>
   </div>
-  <div class="watermark">VERTEX</div>
 </div>
 
 <!-- Feedback Message -->
@@ -336,18 +439,24 @@ function setupCityAutocomplete(inputId,countryId){
 }
 
 // ------------------ PHONE INPUT ------------------
-const itiSender=window.intlTelInput(document.querySelector("#senderPhone"),{
-  initialCountry:"auto",
-  geoIpLookup:cb=>fetch("https://ipapi.co/json").then(r=>r.json()).then(d=>cb(d.country_code)).catch(()=>cb("us")),
-  separateDialCode:true,
-  utilsScript:"https://cdn.jsdelivr.net/npm/intl-tel-input@18.1.1/build/js/utils.js"
-});
-const itiReceiver=window.intlTelInput(document.querySelector("#receiverPhone"),{
-  initialCountry:"auto",
-  geoIpLookup:cb=>fetch("https://ipapi.co/json").then(r=>r.json()).then(d=>cb(d.country_code)).catch(()=>cb("us")),
-  separateDialCode:true,
-  utilsScript:"https://cdn.jsdelivr.net/npm/intl-tel-input@18.1.1/build/js/utils.js"
-});
+const itiSender = window.intlTelInput(
+  document.querySelector("#senderPhone"),
+  {
+    initialCountry: "us",
+    separateDialCode: true,
+    utilsScript:
+      "https://cdn.jsdelivr.net/npm/intl-tel-input@18.1.1/build/js/utils.js"
+  }
+);
+const itiReceiver = window.intlTelInput(
+  document.querySelector("#receiverPhone"),
+  {
+    initialCountry: "us",
+    separateDialCode: true,
+    utilsScript:
+      "https://cdn.jsdelivr.net/npm/intl-tel-input@18.1.1/build/js/utils.js"
+  }
+);
 
 // ------------------ CREATE / UPDATE DELIVERY ------------------
 document.getElementById("createDeliveryForm").addEventListener("submit", async e=>{

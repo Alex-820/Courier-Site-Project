@@ -1,0 +1,38 @@
+[
+  {
+    "trackingNumber": "VX12345",
+    "status": "In Transit",
+    "statusIndex": 2,
+    "service": "Express Delivery",
+    "weight": "2.5kg",
+    "origin": "New York, USA",
+    "destination": "Toronto, Canada",
+    "currentLocation": "Buffalo, NY",
+    "estimatedDelivery": "2026-03-01",
+    "sender": {
+      "name": "John Miller",
+      "phone": "+1 202 555 0134"
+    },
+    "receiver": {
+      "name": "Sarah Thompson",
+      "phone": "+1 416 555 0987"
+    },
+    "history": [
+      {
+        "date": "2026-02-22",
+        "location": "New York, USA",
+        "description": "Shipment created"
+      },
+      {
+        "date": "2026-02-23",
+        "location": "New York, USA",
+        "description": "Picked up by courier"
+      },
+      {
+        "date": "2026-02-24",
+        "location": "Buffalo, NY",
+        "description": "Arrived at sorting facility"
+      }
+    ]
+  }
+]

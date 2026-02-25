@@ -368,71 +368,6 @@ footer{
        z-index:10;">
 </header>
 
-<section id="services">
-  <h2>Our Services</h2>
-  <div class="service-grid">
-    <div class="service-card">
-      <img src="images/Companyworker.png" alt="Team working" style="
-           width:100%;
-           border-radius:12px;
-           margin-bottom:15px;
-           object-fit:cover;">
-      <div class="service-icon">🚚</div>
-      <h3>Standard Delivery</h3>
-      <p>Affordable and dependable shipping solutions.</p>
-    </div>
-    <div class="service-card">
-      <div class="service-icon">⚡</div>
-      <h3>Express Delivery</h3>
-      <p>Priority handling with faster transit times.</p>
-    </div>
-    <div class="service-card">
-      <div class="service-icon">✈️</div>
-      <h3>International Priority</h3>
-      <p>Seamless cross-border logistics worldwide.</p>
-    </div>
-  </div>
-</section>
-
-<section class="why-vertex">
-  <h2>Why Ship With Vertex Express?</h2>
-  <p>Innovative solutions for reliability & speed.</p>
-  
-  <div style="display:flex; gap:30px; flex-wrap:wrap; align-items:center;">
-    <div class="why-grid" style="flex:1;">
-      <div class="why-card">
-        <h3>Premium Shipping at Professional Rates</h3>
-        <p>Reliable delivery and careful handling — on time, every time.</p>
-      </div>
-      <div class="why-card">
-        <h3>We Ship Everywhere</h3>
-        <p>From major cities to remote regions worldwide.</p>
-      </div>
-      <div class="why-card">
-        <h3>Reliable Two-Day Shipping</h3>
-        <p>Flat-rate express options across key regions.</p>
-      </div>
-      <div class="why-card">
-        <h3>Secure & Swift Arrival</h3>
-        <p>Safe handling and optimized transportation network.</p>
-      </div>
-    </div>
-    <img src="images/receivingdelivery.jpg" alt="Receiving package" style="
-         width:300px;
-         border-radius:12px;
-         box-shadow:0 8px 20px rgba(0,0,0,0.15);
-         flex-shrink:0;">
-  </div>
-
-  <div class="trust">
-    <span>ISO Certified</span>
-    <span>Global Logistics Network</span>
-    <span>24/7 Support</span>
-    <span>Enterprise Trusted</span>
-  </div>
-</section>
-</header>
-
 <div class="tracking-card">
   <h2>Track Your Shipment</h2>
   <input type="text" placeholder="Enter Tracking Number">
@@ -446,6 +381,11 @@ footer{
     <div class="step">Delivered</div>
   </div>
   <div id="live-update"></div>
+</div>
+
+<div id="shipmentDetails" style="display:none; margin-top:30px; background:#fff; padding:25px; border-radius:12px; box-shadow:0 10px 30px rgba(0,0,0,0.08);">
+  <h3>Shipment Details</h3>
+  <div id="detailsContent"></div>
 </div>
 
 <div class="stats">
@@ -570,7 +510,27 @@ function trackPackage(){
     if(current<steps.length){
       steps[current].classList.add("active");
       current++;
-    }else clearInterval(interval);
+    }else const detailsDiv = document.getElementById("shipmentDetails");
+const detailsContent = document.getElementById("detailsContent");
+
+detailsDiv.style.display = "block";
+
+detailsContent.innerHTML = `
+  <p><strong>Service:</strong> ${data.service}</p>
+  <p><strong>Weight:</strong> ${data.weight}</p>
+  <p><strong>Origin:</strong> ${data.origin}</p>
+  <p><strong>Destination:</strong> ${data.destination}</p>
+  <p><strong>Current Location:</strong> ${data.currentLocation}</p>
+  <p><strong>Estimated Delivery:</strong> ${data.estimatedDelivery}</p>
+
+  <h4 style="margin-top:20px;">Shipment History</h4>
+  ${data.history.map(event => `
+    <div style="margin-bottom:10px; padding:10px; border-left:3px solid #FF6A00;">
+      <strong>${event.date}</strong> — ${event.location}<br>
+      ${event.description}
+    </div>
+  `).join("")}
+`;
   },1200);
 }
 /* === Smooth Scroll for Nav Links === */
