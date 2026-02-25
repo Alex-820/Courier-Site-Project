@@ -522,9 +522,10 @@ function animateCounters(){
 animateCounters();
 setInterval(()=>{counters.forEach(c=>c.innerText="0");animateCounters();},3000);
 
+<script>
 function trackPackage() {
-  const trackingInput = document.querySelector(".tracking-card input").value.trim();
-  if(!trackingInput) return alert("Enter a tracking number");
+  const trackingInput = document.querySelector(".tracking-card input").value.trim().toUpperCase();
+  if (!trackingInput) return alert("Enter a tracking number");
 
   const steps = document.querySelectorAll(".step");
   steps.forEach(s => s.classList.remove("active"));
@@ -535,13 +536,15 @@ function trackPackage() {
   detailsDiv.style.display = "none";
   detailsContent.innerHTML = "";
 
-  // Find shipment by tracking number
-  const data = deliveries.find(d => d.trackingNumber === trackingInput);
-  if(!data) return alert("Tracking number not found");
+  // Find shipment by tracking number (case-insensitive)
+  const data = deliveries.find(d => d.trackingNumber.toUpperCase() === trackingInput);
+  if (!data) return alert("Tracking number not found");
 
   let current = 0;
+
+  // Animate steps up to the shipment's current statusIndex
   const interval = setInterval(() => {
-    if (current < steps.length) {
+    if (current <= data.statusIndex && current < steps.length) {
       steps[current].classList.add("active");
       current++;
     } else {
@@ -568,6 +571,7 @@ function trackPackage() {
     }
   }, 1200);
 }
+
 /* === Smooth Scroll for Nav Links === */
 document.querySelectorAll('nav a').forEach(link => {
   link.addEventListener('click', e => {
