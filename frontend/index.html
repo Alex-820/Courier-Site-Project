@@ -485,23 +485,98 @@ footer{
 </footer>
 
 <script>
-// ===== Sample Delivery Data =====
 const deliveries = [
   {
-    trackingNumber: "VX12345",
+    trackingNumber: "VTX7845123690",
+    carrier: "International Express",
+    service: "Priority Air Freight",
+
     status: "In Transit",
-    service: "Express Delivery",
-    weight: "2.5kg",
-    origin: "New York, USA",
-    destination: "Toronto, Canada",
-    currentLocation: "Buffalo, NY",
-    estimatedDelivery: "2026-03-01",
-    sender: { name: "John Miller", phone: "+1 202 555 0134" },
-    receiver: { name: "Sarah Thompson", phone: "+1 416 555 0987" },
-    history: [
-      { date: "2026-02-22", location: "New York, USA", description: "Shipment created" },
-      { date: "2026-02-23", location: "New York, USA", description: "Picked up by courier" },
-      { date: "2026-02-24", location: "Buffalo, NY", description: "Arrived at sorting facility" }
+    statusCode: "IT",
+    statusIndex: 2,
+
+    shipmentDate: "2026-02-18 09:45",
+    estimatedDeliveryDate: "2026-02-27",
+    deliveredAt: null,
+
+    shipmentDetails: {
+      weight: "4.2 kg",
+      dimensions: "45 x 30 x 25 cm",
+      pieces: 1,
+      declaredValue: "USD 850",
+      contents: "Consumer Electronics"
+    },
+
+    route: {
+      origin: {
+        city: "Los Angeles",
+        state: "CA",
+        country: "United States",
+        postalCode: "90001"
+      },
+      destination: {
+        city: "Berlin",
+        state: null,
+        country: "Germany",
+        postalCode: "10115"
+      }
+    },
+
+    currentUpdate: {
+      location: "Frankfurt, Germany",
+      date: "2026-02-23 14:20",
+      description: "Arrived at international transit facility"
+    },
+
+    shipper: {
+      name: "Michael Anderson",
+      company: "Anderson Tech Supplies",
+      phone: "+1 213 555 0182",
+      address: "125 Sunset Blvd, Los Angeles, CA 90001, USA"
+    },
+
+    recipient: {
+      name: "Lukas Schneider",
+      phone: "+49 30 98765432",
+      address: "Invalidenstraße 117, 10115 Berlin, Germany"
+    },
+
+    trackingEvents: [
+      {
+        date: "2026-02-18 09:45",
+        location: "Los Angeles, CA, USA",
+        status: "Shipment information received"
+      },
+      {
+        date: "2026-02-18 13:10",
+        location: "Los Angeles, CA, USA",
+        status: "Picked up by courier"
+      },
+      {
+        date: "2026-02-19 02:30",
+        location: "Los Angeles, CA, USA",
+        status: "Departed origin facility"
+      },
+      {
+        date: "2026-02-20 18:50",
+        location: "New York, USA",
+        status: "Arrived at export gateway"
+      },
+      {
+        date: "2026-02-21 23:40",
+        location: "In Transit",
+        status: "Departed United States"
+      },
+      {
+        date: "2026-02-23 14:20",
+        location: "Frankfurt, Germany",
+        status: "Arrived at international transit facility"
+      },
+      {
+        date: "2026-02-24 09:05",
+        location: "Berlin, Germany",
+        status: "Customs clearance completed"
+      }
     ]
   }
 ];
