@@ -2,645 +2,250 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Admin Panel - Vertex Express</title>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@18.1.1/build/css/intlTelInput.min.css">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin - Courier Management</title>
 <style>
-:root{
-  --brand-purple:#4B0082;
-  --brand-orange:#FF6A00;
-  --light:#f4f6f9;
-  --white:#ffffff;
-  --gray:#444;
-}
-
-/* ===== BASE ===== */
-body {
-  font-family:'Segoe UI',sans-serif;
-  margin:0;
-  padding:0;
-  background:var(--light);
-  color:var(--gray);
-}
-
-h1,h2 {
-  margin:0 0 15px 0;
-  color:var(--brand-purple);
-}
-
-input, select, textarea {
-  padding:10px;
-  margin:6px 0;
-  width:100%;
-  box-sizing:border-box;
-  border-radius:6px;
-  border:1px solid #ddd;
-  transition:0.3s;
-}
-
-input:focus, select:focus, textarea:focus{
-  border-color:var(--brand-orange);
-  outline:none;
-}
-
-button {
-  padding:10px 18px;
-  margin:6px 0;
-  border:none;
-  border-radius:6px;
-  cursor:pointer;
-  background:var(--brand-orange);
-  color:white;
-  font-weight:bold;
-  transition:0.3s;
-}
-
-button:hover {
-  background:var(--brand-purple);
-}
-
-fieldset {
-  border:none;
-  padding:20px;
-  border-radius:10px;
-  margin-bottom:25px;
-  background:white;
-  box-shadow:0 10px 25px rgba(0,0,0,0.06);
-}
-
-legend {
-  font-weight:bold;
-  color:var(--brand-purple);
-}
-
-table {
-  width:100%;
-  border-collapse:collapse;
-  margin-top:15px;
-  background:white;
-  border-radius:10px;
-  overflow:hidden;
-  box-shadow:0 10px 25px rgba(0,0,0,0.06);
-}
-
-th, td {
-  padding:10px;
-  text-align:left;
-}
-
-th {
-  background:var(--brand-purple);
-  color:white;
-}
-
-td {
-  border-bottom:1px solid #eee;
-}
-
-/* ===== HEADER (MATCH FRONTEND LOGO) ===== */
-.admin-header{
-  background:white;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  padding:20px 0;
-  box-shadow:0 4px 15px rgba(0,0,0,0.05);
-}
-
-.logo{
-  display:flex;
-  align-items:center;
-  gap:12px;
-}
-
-.logo-mark{
-  width:40px;
-  height:40px;
-  background:linear-gradient(135deg,var(--brand-purple),var(--brand-orange));
-  border-radius:10px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  color:white;
-  font-weight:700;
-  font-size:18px;
-  box-shadow:0 6px 16px rgba(0,0,0,0.15);
-  transition:0.3s;
-}
-
-.logo-mark:hover{
-  transform:scale(1.1) rotate(5deg);
-}
-
-.logo-text{
-  display:flex;
-  flex-direction:column;
-  line-height:1;
-}
-
-.brand-name{
-  font-size:20px;
-  font-weight:700;
-  color:var(--brand-purple);
-}
-
-.brand-sub{
-  font-size:11px;
-  letter-spacing:3px;
-  text-transform:uppercase;
-  color:var(--brand-orange);
-  font-weight:600;
-}
-
-/* ===== LOGIN ===== */
-#loginForm{
-  max-width:400px;
-  margin:60px auto;
-  background:white;
-  padding:30px;
-  border-radius:12px;
-  box-shadow:0 20px 40px rgba(0,0,0,0.08);
-}
-
-#adminContent{
-  padding:30px;
-}
-
-/* ===== FEEDBACK ===== */
-.feedback{
-  position:fixed;
-  top:20px;
-  right:20px;
-  background:var(--brand-purple);
-  color:white;
-  padding:14px 20px;
-  border-radius:8px;
-  box-shadow:0 8px 20px rgba(0,0,0,0.15);
-  display:none;
-  z-index:10000;
-  font-weight:bold;
-}
-
-#cancelUpdateBtn{
-  display:none;
-  background:#a50000;
-}
+  body { font-family: Arial, sans-serif; margin: 20px; background:#f9f9f9; }
+  .card { background: #fff; padding: 20px; margin-bottom: 30px; border-radius: 8px; box-shadow:0 2px 5px rgba(0,0,0,0.1);}
+  .grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(200px,1fr)); gap: 10px; margin-bottom: 20px;}
+  input, select, button { width: 100%; padding: 8px; margin-top: 5px; box-sizing: border-box;}
+  button { cursor: pointer; background: orange; color:#fff; border:none; border-radius: 4px; }
+  h2,h3 { margin-bottom: 10px;}
+  table { width: 100%; border-collapse: collapse; margin-top: 10px;}
+  th,td { padding: 8px; border: 1px solid #ccc; text-align: left;}
 </style>
 </head>
 <body>
 
-<div class="admin-header">
-  <div class="logo">
-    <div class="logo-mark">V</div>
-    <div class="logo-text">
-      <div class="brand-name">Vertex</div>
-      <div class="brand-sub">Express</div>
+<div id="loginSection">
+  <h2>Admin Login</h2>
+  <input type="text" id="username" placeholder="Username">
+  <input type="password" id="password" placeholder="Password">
+  <button type="button" onclick="adminLogin()">Login</button>
+</div>
+
+<!-- Create Delivery Section -->
+<div class="card">
+  <h2>Create Delivery</h2>
+
+  <div class="grid">
+    <div>
+      <h3>Sender Information</h3>
+      <input id="senderName" placeholder="Sender Full Name">
+      <input id="senderPhone" placeholder="Sender Phone">
+      <input id="senderEmail" placeholder="Sender Email">
+      <input id="senderAddress" placeholder="Sender Address">
+      <input id="origin" placeholder="Origin City / Country">
+    </div>
+
+    <div>
+      <h3>Receiver Information</h3>
+      <input id="receiverName" placeholder="Receiver Full Name">
+      <input id="receiverPhone" placeholder="Receiver Phone">
+      <input id="receiverEmail" placeholder="Receiver Email">
+      <input id="receiverAddress" placeholder="Receiver Address">
+      <input id="destination" placeholder="Destination City / Country">
     </div>
   </div>
-</div>
 
-<!-- Feedback Message -->
-<div id="feedback" class="feedback"></div>
-
-<!-- Login Form -->
-<div id="loginForm">
-  <h2>Admin Login</h2>
-  <input type="text" id="username" placeholder="Username" required><br>
-  <input type="password" id="password" placeholder="Password" required><br>
-  <button id="loginBtn">Login</button>
-</div>
-
-<!-- Admin Content -->
-<div id="adminContent">
-
-<h2 id="formTitle">Create Delivery</h2>
-<form id="createDeliveryForm">
-
-  <!-- Sender -->
-  <fieldset>
-    <legend>Sender Information</legend>
-    <input type="text" id="senderFullName" placeholder="Full Name" required><br>
-    <select id="senderCountry" required></select><br>
-    <input type="text" id="senderAddress" placeholder="Address" required><br>
-    <input type="text" id="senderCity" placeholder="City" required><br>
-    <input type="tel" id="senderPhone" placeholder="Phone Number" required><br>
-    <input type="email" id="senderEmail" placeholder="Email" required>
-  </fieldset>
-
-  <!-- Receiver -->
-  <fieldset>
-    <legend>Receiver Information</legend>
-    <input type="text" id="receiverFullName" placeholder="Full Name" required><br>
-    <select id="receiverCountry" required></select><br>
-    <input type="text" id="receiverAddress" placeholder="Address" required><br>
-    <input type="text" id="receiverCity" placeholder="City" required><br>
-    <input type="tel" id="receiverPhone" placeholder="Phone Number" required><br>
-    <input type="email" id="receiverEmail" placeholder="Email" required>
-  </fieldset>
-
-  <!-- Package -->
-  <fieldset>
-    <legend>Package Details</legend>
-
-    <!-- Estimated Delivery Date -->
-    <label><strong>Estimated Delivery Date:</strong></label>
-    <input type="date" id="estimatedDeliveryDate" required><br>
-
-    <input type="text" id="packageType" placeholder="Package Type" required><br>
-    <input type="number" id="weight" placeholder="Weight (kg)" required><br>
-
-    <label>Content Description:</label>
-    <table class="content-table" id="contentTable">
-      <thead>
-        <tr>
-          <th>Description</th>
-          <th>Quantity</th>
-          <th>Estimated Value ($)</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><input type="text" class="desc" value="Men’s wrist watches"></td>
-          <td><input type="number" class="qty" value="2"></td>
-          <td><input type="number" class="value" value="150" step="0.01"></td>
-          <td><button type="button" onclick="removeRow(this)">Remove</button></td>
-        </tr>
-      </tbody>
-    </table>
-    <button type="button" onclick="addRow()">Add Item</button><br>
-
-    <input type="number" id="totalValue" placeholder="Total Value ($)" readonly><br>
-
-    <label><input type="checkbox" id="specialHandlingCheck" onchange="toggleSpecialHandling()"> Special Handling / Services</label><br>
-    <input type="text" id="specialHandlingInput" placeholder="Describe Special Handling"><br>
-
-    <select id="shipmentType" required>
-      <option value="Standard">Standard</option>
-      <option value="International Priority">International Priority</option>
-      <option value="Express">Express</option>
+  <h3>Package Information</h3>
+  <div class="grid">
+    <input id="weight" placeholder="Weight (kg)">
+    <input id="pieces" placeholder="Number of Pieces">
+    <select id="service">
+      <option>Express</option>
+      <option>Standard</option>
+      <option>International Priority</option>
+      <option>Freight</option>
     </select>
-  </fieldset>
+    <select id="packageType">
+      <option>Document</option>
+      <option>Parcel</option>
+      <option>Electronics</option>
+      <option>Cargo</option>
+    </select>
+    <input id="estimatedDeliveryDate" placeholder="Estimated Delivery Date">
+  </div>
 
-  <label><input type="checkbox" id="signatureRequired"> Signature Required</label><br>
-  <label><input type="checkbox" id="saturdayDelivery"> Saturday Delivery</label><br>
+  <h3>Package Contents (Customs Information)</h3>
+  <div id="itemsContainer"></div>
+  <button type="button" onclick="addItem()">Add Another Item</button>
 
-  <button type="submit" id="submitBtn">Create Delivery</button>
-  <button type="button" id="cancelUpdateBtn" onclick="cancelUpdate()">Cancel</button>
-</form>
+  <h3>Shipment Status</h3>
+  <select id="shipmentStatus">
+    <option>Shipment Created</option>
+    <option>Picked Up</option>
+    <option>In Transit</option>
+    <option>Customs Clearance</option>
+    <option>Out for Delivery</option>
+    <option>Delivered</option>
+  </select>
 
-<h2>Manage Deliveries</h2>
-<table>
-  <thead>
-    <tr>
-      <th>Tracking</th>
-      <th>Status</th>
-      <th>Location</th>
-      <th>Actions</th>
-    </tr>
-  </thead>
-  <tbody id="deliveryTableBody"></tbody>
-</table>
+  <h3>Current Location</h3>
+  <input id="currentLocation" placeholder="Current Location of Package">
 
+  <button onclick="createDelivery()">Create Shipment</button>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/intl-tel-input@18.1.1/build/js/intlTelInput.min.js"></script>
+<!-- Manage Deliveries Section -->
+<div class="card">
+  <h2>Manage Deliveries</h2>
+  
+  <div style="margin-bottom: 20px;">
+    <input id="searchTracking" placeholder="Enter Tracking Number">
+    <button onclick="searchDelivery()">Search</button>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Tracking Number</th>
+        <th>Sender</th>
+        <th>Receiver</th>
+        <th>Current Location</th>
+        <th>Status</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody id="deliveriesTable">
+      <tr><td colspan="6" style="text-align:center;">No deliveries loaded.</td></tr>
+    </tbody>
+  </table>
+</div>
+
 <script>
-// ------------------ GLOBAL ------------------
-let deliveries = [];
-let countries = [];
-let allCities = [];
-let editingTracking = null;
-
-// ------------------ LOGIN FLOW ------------------
-const tokenKey = "adminToken";
-const loginForm = document.getElementById("loginForm");
-const adminContent = document.getElementById("adminContent");
-const feedback = document.getElementById("feedback");
-
-function showLogin(){ loginForm.style.display="block"; adminContent.style.display="none"; }
-function showAdmin(){ loginForm.style.display="none"; adminContent.style.display="block"; }
-
-async function checkToken(){
-  const token = localStorage.getItem(tokenKey);
-  if(!token){ showLogin(); return; }
-  try{
-    const res = await fetch("/admin/deliveries", { headers: { "Authorization": `Bearer ${token}` } });
-    if(!res.ok) { showLogin(); localStorage.removeItem(tokenKey); return; }
-    deliveries = await res.json();
-    renderDeliveries();
-    showAdmin();
-  }catch(err){ console.error(err); showLogin(); }
-}
-
-// Login button listener
-document.addEventListener("DOMContentLoaded",()=>{
-  document.getElementById("loginBtn").addEventListener("click", async ()=>{
-    const username = document.getElementById("username").value.trim();
-    const password = document.getElementById("password").value.trim();
-    if(!username || !password) return alert("Enter username & password");
-    try{
-      const res = await fetch("/admin/login", {
-        method:"POST",
-        headers: { "Content-Type":"application/json" },
-        body: JSON.stringify({username,password})
-      });
-      const data = await res.json();
-      if(!res.ok) return alert(data.message||"Login failed");
-      localStorage.setItem(tokenKey, data.token);
-      checkToken();
-    }catch(err){ console.error(err); alert("Login error"); }
-  });
-});
-
-// ------------------ FEEDBACK ------------------
-function showFeedback(msg, duration=3000){
-  feedback.innerText = msg;
-  feedback.style.display = "block";
-  setTimeout(()=>{ feedback.style.display = "none"; }, duration);
-}
-
-// ------------------ ADD / REMOVE ROWS ------------------
-function addRow(desc="", qty=1, val=0){
-  const tbody = document.querySelector("#contentTable tbody");
-  const row = document.createElement("tr");
-  row.innerHTML = `
-    <td><input type="text" class="desc" placeholder="Description" value="${desc}"></td>
-    <td><input type="number" class="qty" value="${qty}"></td>
-    <td><input type="number" class="value" value="${val}" step="0.01"></td>
-    <td><button type="button" onclick="removeRow(this)">Remove</button></td>
-  `;
-  tbody.appendChild(row);
-  attachListeners(row);
-}
-function removeRow(btn){ btn.closest("tr").remove(); calculateTotal(); }
-function attachListeners(row){
-  row.querySelector(".qty")?.addEventListener("input", calculateTotal);
-  row.querySelector(".value")?.addEventListener("input", calculateTotal);
-}
-document.querySelectorAll("#contentTable tbody tr").forEach(attachListeners);
-function calculateTotal(){
-  let total=0;
-  document.querySelectorAll("#contentTable tbody tr").forEach(r=>{
-    const qty=parseFloat(r.querySelector(".qty")?.value||0);
-    const val=parseFloat(r.querySelector(".value")?.value||0);
-    total+=qty*val;
-  });
-  document.getElementById("totalValue").value=total.toFixed(2);
-}
-
-// ------------------ SPECIAL HANDLING ------------------
-function toggleSpecialHandling(){
-  document.getElementById("specialHandlingInput").style.display =
-    document.getElementById("specialHandlingCheck").checked ? "block":"none";
-}
-
-// ------------------ COUNTRY & CITY ------------------
-async function loadCountriesAndCities(){
-  try{
-    const resCountries=await fetch('/countries');
-    countries=await resCountries.json();
-    const cityList=[];
-    for(let country of countries){
-      const resCities=await fetch(`/cities/${country}`);
-      const cities=await resCities.json();
-      cities.forEach(city=>cityList.push({city,country}));
+  function addItem() {
+    const container = document.getElementById("itemsContainer");
+    if (!container) {
+      console.error("itemsContainer not found!");
+      return;
     }
-    allCities=cityList;
-    const senderCountry=document.getElementById("senderCountry");
-    const receiverCountry=document.getElementById("receiverCountry");
-    countries.forEach(c=>{
-      senderCountry.innerHTML+=`<option value="${c}">${c}</option>`;
-      receiverCountry.innerHTML+=`<option value="${c}">${c}</option>`;
-    });
-  }catch(err){console.error(err);}
-}
-function setupCityAutocomplete(inputId,countryId){
-  const input=document.getElementById(inputId);
-  input.addEventListener("input",()=>{
-    const selectedCountry=document.getElementById(countryId).value;
-    const suggestions=allCities
-      .filter(c=>c.country===selectedCountry && c.city.toLowerCase().startsWith(input.value.toLowerCase()))
-      .map(c=>c.city);
-    let listId=inputId+"-list";
-    let list=document.getElementById(listId);
-    if(!list){ list=document.createElement("div"); list.id=listId; list.className="autocomplete-list"; input.parentNode.appendChild(list); }
-    list.innerHTML="";
-    suggestions.slice(0,5).forEach(city=>{
-      const div=document.createElement("div");
-      div.innerText=city;
-      div.addEventListener("click",()=>{input.value=city; list.innerHTML="";});
-      list.appendChild(div);
-    });
-  });
-  document.addEventListener("click",e=>{
-    const list=document.getElementById(inputId+"-list");
-    if(list && !list.contains(e.target) && e.target!==input) list.innerHTML="";
-  });
-}
-
-// ------------------ PHONE INPUT ------------------
-const itiSender = window.intlTelInput(
-  document.querySelector("#senderPhone"),
-  {
-    initialCountry: "us",
-    separateDialCode: true,
-    utilsScript:
-      "https://cdn.jsdelivr.net/npm/intl-tel-input@18.1.1/build/js/utils.js"
-  }
-);
-const itiReceiver = window.intlTelInput(
-  document.querySelector("#receiverPhone"),
-  {
-    initialCountry: "us",
-    separateDialCode: true,
-    utilsScript:
-      "https://cdn.jsdelivr.net/npm/intl-tel-input@18.1.1/build/js/utils.js"
-  }
-);
-
-// ------------------ CREATE / UPDATE DELIVERY ------------------
-document.getElementById("createDeliveryForm").addEventListener("submit", async e=>{
-  e.preventDefault();
-  const token = localStorage.getItem(tokenKey);
-  if(!token) return alert("You must login first");
-  const contentRows=Array.from(document.querySelectorAll("#contentTable tbody tr")).map(r=>{
-    const desc=r.querySelector(".desc")?.value||"";
-    const qty=r.querySelector(".qty")?.value||0;
-    const val=r.querySelector(".value")?.value||0;
-    return {description:desc, quantity:qty, estimatedValue:`$${parseFloat(val).toFixed(2)}`};
-  });
-  const totalValue=`$${parseFloat(document.getElementById("totalValue").value||0).toFixed(2)}`;
-  const deliveryData={
-    senderFullName:document.getElementById("senderFullName").value,
-    senderAddress:document.getElementById("senderAddress").value,
-    senderCity:document.getElementById("senderCity").value,
-    senderCountry:document.getElementById("senderCountry").value,
-    senderPhone:itiSender.getNumber(),
-    senderEmail:document.getElementById("senderEmail").value,
-    receiverFullName:document.getElementById("receiverFullName").value,
-    receiverAddress:document.getElementById("receiverAddress").value,
-    receiverCity:document.getElementById("receiverCity").value,
-    receiverCountry:document.getElementById("receiverCountry").value,
-    receiverPhone:itiReceiver.getNumber(),
-    receiverEmail:document.getElementById("receiverEmail").value,
-    packageType:document.getElementById("packageType").value,
-    weight:document.getElementById("weight").value,
-    estimatedDeliveryDate: document.getElementById("estimatedDeliveryDate").value, // ✅ added
-    contentItems:contentRows,
-    totalValue,
-    specialHandling:document.getElementById("specialHandlingCheck").checked ? document.getElementById("specialHandlingInput").value:"",
-    shipmentType:document.getElementById("shipmentType").value,
-    signatureRequired:document.getElementById("signatureRequired").checked,
-    saturdayDelivery:document.getElementById("saturdayDelivery").checked
-  };
-
-  try{
-    let url = "/admin/deliveries";
-    let method = "POST";
-    if(editingTracking){
-      url += `/${editingTracking}`;
-      method = "PUT";
-    }
-    const res = await fetch(url,{
-      method,
-      headers:{
-        "Content-Type":"application/json",
-        "Authorization": `Bearer ${token}`
-      },
-      body: JSON.stringify(deliveryData)
-    });
-    const data = await res.json();
-    if(!res.ok) { alert(data.message || "Failed"); return; }
-    showFeedback(editingTracking ? "Delivery updated!" : "Delivery created!");
-    loadDeliveries();
-    cancelUpdate();
-  }catch(err){ console.error(err); alert("Error saving delivery");}
-});
-
-// ------------------ CANCEL UPDATE ------------------
-function cancelUpdate(){
-  editingTracking = null;
-  document.getElementById("formTitle").innerText = "Create Delivery";
-  document.getElementById("submitBtn").innerText = "Create Delivery";
-  document.getElementById("cancelUpdateBtn").style.display = "none";
-  document.getElementById("createDeliveryForm").reset();
-  itiSender.setNumber("");
-  itiReceiver.setNumber("");
-  toggleSpecialHandling();
-  calculateTotal();
-}
-
-// ------------------ LOAD / RENDER DELIVERIES ------------------
-async function loadDeliveries(){
-  const token = localStorage.getItem(tokenKey);
-  if(!token) { showLogin(); return; }
-  try{
-    const res = await fetch("/admin/deliveries",{ headers:{ "Authorization": `Bearer ${token}` } });
-    if(!res.ok) { showLogin(); localStorage.removeItem(tokenKey); return; }
-    deliveries = await res.json();
-    renderDeliveries();
-  }catch(err){console.error(err); }
-}
-
-function renderDeliveries(){
-  const tbody=document.getElementById("deliveryTableBody");
-  tbody.innerHTML="";
-  deliveries.forEach(d=>{
-    const tr=document.createElement("tr");
-    tr.innerHTML=`
-      <td>${d.trackingNumber||"-"}</td>
-      <td>${d.status||"Pending"}</td>
-      <td>${d.location||"-"}</td>
-      <td>
-        <button type="button" onclick='viewDelivery("${d.trackingNumber}")'>View / Update</button>
-        <button type="button" onclick='deleteDelivery("${d.trackingNumber}", this)'>Delete</button>
-      </td>
+    const newRow = document.createElement("div");
+    newRow.classList.add("grid", "item-row");
+    newRow.innerHTML = `
+      <input class="itemName" placeholder="Item Name">
+      <input class="itemDescription" placeholder="Item Description">
+      <input class="itemQuantity" placeholder="Quantity">
+      <input class="itemPrice" placeholder="Declared Value">
+      <select class="currency">
+        <option value="USD">$ USD</option>
+        <option value="EUR">€ EUR</option>
+        <option value="GBP">£ GBP</option>
+        <option value="NGN">₦ NGN</option>
+        <option value="CAD">$ CAD</option>
+        <option value="AUD">$ AUD</option>
+        <option value="JPY">¥ JPY</option>
+      </select>
     `;
-    tbody.appendChild(tr);
-  });
-}
-
-// ------------------ VIEW DELIVERY ------------------
-function viewDelivery(tracking){
-  const d = deliveries.find(x => x.trackingNumber === tracking);
-  if(!d) return alert("Delivery not found");
-
-  editingTracking = tracking;
-  document.getElementById("formTitle").innerText = `Update Delivery (${tracking})`;
-  document.getElementById("submitBtn").innerText = "Update Delivery";
-  document.getElementById("cancelUpdateBtn").style.display = "inline-block";
-
-  // Populate sender info
-  document.getElementById("senderFullName").value = d.senderFullName || "";
-  document.getElementById("senderAddress").value = d.senderAddress || "";
-  document.getElementById("senderCity").value = d.senderCity || "";
-  document.getElementById("senderCountry").value = d.senderCountry || "";
-  itiSender.setNumber(d.senderPhone || "");
-  document.getElementById("senderEmail").value = d.senderEmail || "";
-
-  // Populate receiver info
-  document.getElementById("receiverFullName").value = d.receiverFullName || "";
-  document.getElementById("receiverAddress").value = d.receiverAddress || "";
-  document.getElementById("receiverCity").value = d.receiverCity || "";
-  document.getElementById("receiverCountry").value = d.receiverCountry || "";
-  itiReceiver.setNumber(d.receiverPhone || "");
-  document.getElementById("receiverEmail").value = d.receiverEmail || "";
-
-  // Package info
-  document.getElementById("packageType").value = d.packageType || "";
-  document.getElementById("weight").value = d.weight || "";
-  document.getElementById("estimatedDeliveryDate").value = d.estimatedDeliveryDate || ""; // ✅ populate
-
-  // Clear previous content rows
-  const tbody = document.querySelector("#contentTable tbody");
-  tbody.innerHTML = "";
-
-  const items = d.contentItems || [];
-  items.forEach(item => {
-    let val = parseFloat((item.estimatedValue || "0").replace('$','')) || 0;
-    addRow(item.description || "", item.quantity || 1, val);
-  });
-
-  document.getElementById("totalValue").value = parseFloat((d.totalValue || "0").replace('$','')).toFixed(2);
-
-  // Special handling
-  if(d.specialHandling){
-    document.getElementById("specialHandlingCheck").checked = true;
-    toggleSpecialHandling();
-    document.getElementById("specialHandlingInput").value = d.specialHandling;
-  } else {
-    document.getElementById("specialHandlingCheck").checked = false;
-    toggleSpecialHandling();
+    container.appendChild(newRow);
   }
 
-  document.getElementById("shipmentType").value = d.shipmentType || "Standard";
-  document.getElementById("signatureRequired").checked = !!d.signatureRequired;
-  document.getElementById("saturdayDelivery").checked = !!d.saturdayDelivery;
-}
+  async function createDelivery() {
+    const itemsContainer = document.querySelectorAll("#itemsContainer .item-row");
+    const items = Array.from(itemsContainer).map(row => ({
+      itemName: row.querySelector(".itemName").value,
+      itemDescription: row.querySelector(".itemDescription").value,
+      itemQuantity: row.querySelector(".itemQuantity").value,
+      itemPrice: row.querySelector(".itemPrice").value,
+      currency: row.querySelector(".currency").value
+    }));
 
-// ------------------ DELETE DELIVERY ------------------
-async function deleteDelivery(trackingNumber, btn){
-  if(!confirm("Delete this delivery?")) return;
-  const token = localStorage.getItem(tokenKey);
-  if(!token) { showLogin(); return; }
-  try{
-    const res=await fetch(`/admin/deliveries/${trackingNumber}`,{
-      method:"DELETE",
-      headers:{ "Authorization": `Bearer ${token}` }
+    const data = {
+      senderName: document.getElementById("senderName").value,
+      senderPhone: document.getElementById("senderPhone").value,
+      senderEmail: document.getElementById("senderEmail").value,
+      senderAddress: document.getElementById("senderAddress").value,
+      receiverName: document.getElementById("receiverName").value,
+      receiverPhone: document.getElementById("receiverPhone").value,
+      receiverEmail: document.getElementById("receiverEmail").value,
+      receiverAddress: document.getElementById("receiverAddress").value,
+      origin: document.getElementById("origin").value,
+      destination: document.getElementById("destination").value,
+      weight: document.getElementById("weight").value,
+      pieces: document.getElementById("pieces").value,
+      service: document.getElementById("service").value,
+      packageType: document.getElementById("packageType").value,
+      estimatedDeliveryDate: document.getElementById("estimatedDeliveryDate").value,
+      shipmentStatus: document.getElementById("shipmentStatus").value,
+      currentLocation: document.getElementById("currentLocation").value,
+      items: items
+    };
+
+    const res = await fetch("/admin/create-delivery", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data)
     });
-    if(!res.ok) return alert("Failed to delete");
-    btn.closest("tr").remove();
-  }catch(err){console.error(err); alert("Error deleting delivery");}
+
+    const result = await res.json();
+    alert("Shipment Created. Tracking Number: " + result.trackingNumber);
+  }
+
+  // Manage Deliveries
+  async function searchDelivery() {
+    const tracking = document.getElementById("searchTracking").value;
+    const url = tracking ? `/admin/deliveries/${tracking}` : '/admin/deliveries';
+    const res = await fetch(url);
+    const deliveries = await res.json();
+    const table = document.getElementById("deliveriesTable");
+
+    if (!deliveries || deliveries.length === 0) {
+      table.innerHTML = `<tr><td colspan="6" style="text-align:center;">No deliveries found.</td></tr>`;
+      return;
+    }
+
+    table.innerHTML = deliveries.map(d => `
+      <tr>
+        <td>${d.trackingNumber}</td>
+        <td>${d.senderName}</td>
+        <td>${d.receiverName}</td>
+        <td><input value="${d.currentLocation || ''}" id="loc-${d.trackingNumber}" placeholder="Current Location"></td>
+        <td>
+          <select id="status-${d.trackingNumber}">
+            <option ${d.shipmentStatus === 'Shipment Created' ? 'selected' : ''}>Shipment Created</option>
+            <option ${d.shipmentStatus === 'Picked Up' ? 'selected' : ''}>Picked Up</option>
+            <option ${d.shipmentStatus === 'In Transit' ? 'selected' : ''}>In Transit</option>
+            <option ${d.shipmentStatus === 'Customs Clearance' ? 'selected' : ''}>Customs Clearance</option>
+            <option ${d.shipmentStatus === 'Out for Delivery' ? 'selected' : ''}>Out for Delivery</option>
+            <option ${d.shipmentStatus === 'Delivered' ? 'selected' : ''}>Delivered</option>
+          </select>
+        </td>
+        <td><button onclick="updateDelivery('${d.trackingNumber}')">Update</button></td>
+      </tr>
+    `).join('');
+  }
+
+async function adminLogin() {
+  const username = document.getElementById("username").value;
+  const password = document.getElementById("password").value;
+
+  const res = await fetch("/admin/login", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ username, password })
+  });
+
+  const data = await res.json();
+
+  if (res.ok) {
+    sessionStorage.setItem("token", data.token);
+    alert("Login successful!");
+  } else {
+    alert(data.message || "Login failed");
+  }
 }
 
-// ------------------ INIT ------------------
-document.addEventListener("DOMContentLoaded",()=>{
-  loadCountriesAndCities();
-  setupCityAutocomplete("senderCity","senderCountry");
-  setupCityAutocomplete("receiverCity","receiverCountry");
-  calculateTotal();
-  checkToken();
-});
+async function getDeliveries() {
+  const token = sessionStorage.getItem("token");
+
+  const res = await fetch("/admin/deliveries", {
+    headers: { "Authorization": "Bearer " + token }
+  });
+
+  const deliveries = await res.json();
+  console.log(deliveries);
+}
+</script>
 </script>
 </body>
 </html>
