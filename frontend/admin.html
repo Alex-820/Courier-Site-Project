@@ -3,117 +3,741 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin - Courier Management</title>
+<title>Admin - Vertex Express</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/6.6.6/flag-icons.min.css">
 <style>
-  body { font-family: Arial, sans-serif; margin: 20px; background:#f9f9f9; }
-  .card { background: #fff; padding: 20px; margin-bottom: 30px; border-radius: 8px; box-shadow:0 2px 5px rgba(0,0,0,0.1);}
-  .grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(200px,1fr)); gap: 10px; margin-bottom: 20px;}
-  input, select, button { width: 100%; padding: 8px; margin-top: 5px; box-sizing: border-box;}
-  button { cursor: pointer; background: orange; color:#fff; border:none; border-radius: 4px; }
-  h2,h3 { margin-bottom: 10px;}
-  table { width: 100%; border-collapse: collapse; margin-top: 10px;}
-  th,td { padding: 8px; border: 1px solid #ccc; text-align: left;}
+:root{
+  --brand-purple:#4B0082;
+  --brand-orange:#FF6A00;
+  --gray:#444;
+  --light:#f4f6f9;
+  --white:#ffffff;
+  --dark-gray:#333;
+}
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+body {
+  font-family:'Segoe UI',sans-serif;
+  /* Vertex Express themed background image */
+  background: url('images/W2.jpeg') center center / cover fixed;
+  color:var(--gray);
+  line-height:1.6;
+}
+
+/* lighten admin content area for readability over image */
+#adminContent {
+  padding:40px;
+  max-width:1200px;
+  margin:0 auto;
+  background:rgba(255,255,255,0.85);
+  border-radius:12px;
+}
+
+h1,h2,h3{
+  color:var(--brand-purple);
+  margin-bottom:15px;
+}
+
+/* HEADER & NAV */
+nav{
+  background:white;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:15px 40px;
+  box-shadow:0 3px 12px rgba(0,0,0,0.05);
+  position:sticky;
+  top:0;
+  z-index:1000;
+}
+
+.logo{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.logo-mark{
+  width:40px;
+  height:40px;
+  background:linear-gradient(135deg,var(--brand-purple),var(--brand-orange));
+  border-radius:10px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:white;
+  font-weight:700;
+  font-size:18px;
+  box-shadow:0 6px 16px rgba(0,0,0,0.15);
+  transition: transform 0.3s ease;
+}
+
+.logo-mark:hover{
+  transform: scale(1.1) rotate(5deg);
+}
+
+.logo-text{
+  display:flex;
+  flex-direction:column;
+  line-height:1.2;
+}
+
+.logo-text .brand-name{
+  font-size:18px;
+  font-weight:700;
+  color:var(--brand-purple);
+  letter-spacing:0.5px;
+}
+
+.logo-text .brand-sub{
+  font-size:10px;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  color:var(--brand-orange);
+  font-weight:600;
+}
+
+nav .nav-right{
+  display:flex;
+  gap:20px;
+  align-items:center;
+}
+
+.logout-btn{
+  padding:8px 16px;
+  background:var(--brand-orange);
+  color:white;
+  border:none;
+  border-radius:6px;
+  cursor:pointer;
+  font-weight:600;
+  transition:all 0.3s ease;
+  display:none;
+}
+
+.logout-btn:hover{
+  background:var(--brand-purple);
+  transform:translateY(-2px);
+  box-shadow:0 4px 12px rgba(255,106,0,0.3);
+}
+
+.logout-btn.show{
+  display:block;
+}
+
+/* LOGIN SECTION */
+#loginSection{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  min-height:100vh;
+  background:linear-gradient(135deg, var(--brand-purple) 0%, #6a00ff 100%);
+}
+
+.login-container{
+  background:white;
+  padding:50px;
+  border-radius:16px;
+  box-shadow:0 20px 60px rgba(0,0,0,0.3);
+  width:100%;
+  max-width:380px;
+  text-align:center;
+}
+
+.login-container h2{
+  color:var(--brand-purple);
+  margin-bottom:10px;
+  font-size:28px;
+}
+
+.login-container p{
+  color:#999;
+  margin-bottom:30px;
+  font-size:14px;
+}
+
+.login-container input{
+  width:100%;
+  padding:12px;
+  margin-bottom:15px;
+  border:2px solid #e0e0e0;
+  border-radius:8px;
+  font-size:14px;
+  transition:all 0.3s ease;
+}
+
+.login-container input:focus{
+  border-color:var(--brand-orange);
+  box-shadow:0 0 10px rgba(255,106,0,0.2);
+  outline:none;
+}
+
+.login-container button{
+  width:100%;
+  padding:12px;
+  background:linear-gradient(135deg,var(--brand-purple),var(--brand-orange));
+  color:white;
+  border:none;
+  border-radius:8px;
+  font-weight:700;
+  font-size:15px;
+  cursor:pointer;
+  transition:all 0.3s ease;
+}
+
+.login-container button:hover{
+  transform:translateY(-2px);
+  box-shadow:0 10px 25px rgba(75,0,130,0.4);
+}
+
+/* ADMIN CONTENT */
+#adminContent{
+  padding:40px;
+  max-width:1200px;
+  margin:0 auto;
+}
+
+.section-title{
+  font-size:24px;
+  color:var(--brand-purple);
+  margin-top:30px;
+  margin-bottom:20px;
+  padding-bottom:10px;
+  border-bottom:3px solid var(--brand-orange);
+  display:inline-block;
+}
+
+.card {
+  background:white;
+  padding:30px;
+  margin-bottom:30px;
+  border-radius:12px;
+  box-shadow:0 3px 15px rgba(0,0,0,0.08);
+  border-left:5px solid var(--brand-orange);
+}
+
+.card h2{
+  font-size:22px;
+  margin-bottom:20px;
+}
+
+.card h3{
+  font-size:15px;
+  color:#666;
+  margin-top:20px;
+  margin-bottom:12px;
+  text-transform:uppercase;
+  letter-spacing:1px;
+  font-weight:600;
+}
+
+.grid {
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  gap:15px;
+  margin-bottom:20px;
+}
+
+.form-group{
+  margin-bottom:15px;
+}
+
+label{
+  display:block;
+  font-size:12px;
+  font-weight:600;
+  color:#666;
+  text-transform:uppercase;
+  letter-spacing:0.5px;
+  margin-bottom:6px;
+}
+
+input, select {
+  width:100%;
+  padding:12px;
+  border:2px solid #e0e0e0;
+  border-radius:8px;
+  font-size:14px;
+  transition:all 0.3s ease;
+  font-family:'Segoe UI',sans-serif;
+}
+
+input:focus, select:focus{
+  border-color:var(--brand-orange);
+  box-shadow:0 0 10px rgba(255,106,0,0.2);
+  outline:none;
+}
+
+.phone-group{
+  display:grid;
+  grid-template-columns:80px 1fr;
+  gap:10px;
+  align-items:flex-end;
+}
+
+.phone-group select{
+  grid-column:1;
+}
+
+.phone-group input{
+  grid-column:2;
+}
+
+.flex-row{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:15px;
+}
+
+button {
+  cursor: pointer;
+  background:linear-gradient(135deg,var(--brand-purple),var(--brand-orange));
+  color:white;
+  border:none;
+  border-radius:8px;
+  padding:12px 24px;
+  font-weight:700;
+  font-size:14px;
+  transition:all 0.3s ease;
+  text-transform:uppercase;
+  letter-spacing:1px;
+}
+
+button:hover {
+  transform:translateY(-2px);
+  box-shadow:0 8px 20px rgba(75,0,130,0.4);
+}
+
+button:active{
+  transform:translateY(0);
+}
+
+button.secondary{
+  background:white;
+  color:var(--brand-purple);
+  border:2px solid var(--brand-orange);
+}
+
+button.secondary:hover{
+  background:var(--brand-orange);
+  color:white;
+}
+
+button.danger{
+  background:#E74C3C;
+}
+
+button.danger:hover{
+  background:#C0392B;
+}
+
+table {
+  width:100%;
+  border-collapse:collapse;
+  margin-top:20px;
+  font-size:13px;
+}
+
+th{
+  background:linear-gradient(135deg,var(--brand-purple),#6a00ff);
+  color:white;
+  padding:15px;
+  text-align:left;
+  font-weight:700;
+  text-transform:uppercase;
+  letter-spacing:0.5px;
+}
+
+td {
+  padding:12px 15px;
+  border-bottom:1px solid #e0e0e0;
+}
+
+tr:hover{
+  background:#f9f9f9;
+}
+
+.flag-icon {
+  width:24px;
+  height:18px;
+  margin-right:8px;
+  border-radius:3px;
+}
+
+.search-box{
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:10px;
+  margin-bottom:20px;
+}
+
+.item-row{
+  background:#f9f9f9;
+  padding:15px;
+  border-radius:8px;
+  margin-bottom:10px;
+  border-left:3px solid var(--brand-orange);
+}
+
+.accent-line{
+  width:120px;
+  height:3px;
+  background:var(--brand-orange);
+  margin:10px 0;
+}
+
+@media(max-width:768px){
+  .flex-row{
+    grid-template-columns:1fr;
+  }
+  
+  .phone-group{
+    grid-template-columns:70px 1fr;
+  }
+  
+  nav{
+    padding:15px 20px;
+    flex-direction:column;
+    gap:15px;
+  }
+  
+  #adminContent{
+    padding:20px;
+  }
+  
+  .card{
+    padding:20px;
+  }
+}
 </style>
 </head>
 <body>
 
+<nav>
+  <div class="logo">
+    <div class="logo-mark">VX</div>
+    <div class="logo-text">
+      <div class="brand-name">Vertex Express</div>
+      <div class="brand-sub">Admin</div>
+    </div>
+  </div>
+  <div class="nav-right">
+    <button class="logout-btn" onclick="logout()">Logout</button>
+  </div>
+</nav>
+
 <div id="loginSection">
-  <h2>Admin Login</h2>
-  <input type="text" id="username" placeholder="Username">
-  <input type="password" id="password" placeholder="Password">
-  <button type="button" onclick="adminLogin()">Login</button>
+  <div class="login-container">
+    <div class="logo-mark" style="width:60px;height:60px;font-size:32px;margin:0 auto 20px;">VX</div>
+    <h2>Admin Login</h2>
+    <p>Vertex Express Courier Management</p>
+    <input type="text" id="username" placeholder="Username">
+    <input type="password" id="password" placeholder="Password">
+    <button type="button" onclick="adminLogin()">Sign In</button>
+  </div>
 </div>
 
-<!-- Create Delivery Section -->
-<div class="card">
-  <h2>Create Delivery</h2>
+<div id="adminContent" style="display:none;">
+  <!-- Create Delivery Section -->
+  <div class="card">
+    <h2>📦 Create New Shipment</h2>
 
-  <div class="grid">
-    <div>
-      <h3>Sender Information</h3>
-      <input id="senderName" placeholder="Sender Full Name">
-      <input id="senderPhone" placeholder="Sender Phone">
-      <input id="senderEmail" placeholder="Sender Email">
-      <input id="senderAddress" placeholder="Sender Address">
-      <input id="origin" placeholder="Origin City / Country">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:30px;margin-bottom:30px;">
+      <div>
+        <h3>Sender Information</h3>
+        <div class="form-group">
+          <label>Full Name</label>
+          <input id="senderName" placeholder="John Doe">
+        </div>
+        <div class="form-group">
+          <label>Email</label>
+          <input id="senderEmail" type="email" placeholder="john@example.com">
+        </div>
+        <div class="form-group">
+          <label>Phone Number</label>
+          <div class="phone-group">
+            <select id="senderCountryCode">
+              <option value="US">🇺🇸 +1</option>
+              <option value="GB">🇬🇧 +44</option>
+              <option value="CA">🇨🇦 +1</option>
+              <option value="AU">🇦🇺 +61</option>
+              <option value="NG">🇳🇬 +234</option>
+              <option value="DE">🇩🇪 +49</option>
+              <option value="FR">🇫🇷 +33</option>
+              <option value="JP">🇯🇵 +81</option>
+              <option value="CN">🇨🇳 +86</option>
+              <option value="IN">🇮🇳 +91</option>
+            </select>
+            <input id="senderPhone" placeholder="2025551234">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Street Address</label>
+          <input id="senderAddress" placeholder="123 Main Street">
+        </div>
+        <div class="flex-row">
+          <div class="form-group">
+            <label>Country</label>
+            <select id="senderCountry" onchange="updateSenderCities()">
+              <option>Select Country...</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>City</label>
+            <select id="senderCity">
+              <option>Select City...</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <h3>Receiver Information</h3>
+        <div class="form-group">
+          <label>Full Name</label>
+          <input id="receiverName" placeholder="Jane Smith">
+        </div>
+        <div class="form-group">
+          <label>Email</label>
+          <input id="receiverEmail" type="email" placeholder="jane@example.com">
+        </div>
+        <div class="form-group">
+          <label>Phone Number</label>
+          <div class="phone-group">
+            <select id="receiverCountryCode">
+              <option value="US">🇺🇸 +1</option>
+              <option value="GB">🇬🇧 +44</option>
+              <option value="CA">🇨🇦 +1</option>
+              <option value="AU">🇦🇺 +61</option>
+              <option value="NG">🇳🇬 +234</option>
+              <option value="DE">🇩🇪 +49</option>
+              <option value="FR">🇫🇷 +33</option>
+              <option value="JP">🇯🇵 +81</option>
+              <option value="CN">🇨🇳 +86</option>
+              <option value="IN">🇮🇳 +91</option>
+            </select>
+            <input id="receiverPhone" placeholder="2025551234">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Street Address</label>
+          <input id="receiverAddress" placeholder="456 Oak Avenue">
+        </div>
+        <div class="flex-row">
+          <div class="form-group">
+            <label>Country</label>
+            <select id="receiverCountry" onchange="updateReceiverCities()">
+              <option>Select Country...</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>City</label>
+            <select id="receiverCity">
+              <option>Select City...</option>
+            </select>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <div>
-      <h3>Receiver Information</h3>
-      <input id="receiverName" placeholder="Receiver Full Name">
-      <input id="receiverPhone" placeholder="Receiver Phone">
-      <input id="receiverEmail" placeholder="Receiver Email">
-      <input id="receiverAddress" placeholder="Receiver Address">
-      <input id="destination" placeholder="Destination City / Country">
+    <hr style="border:none;border-top:2px solid #e0e0e0;margin:30px 0;">
+
+    <h3>📦 Package Information</h3>
+    <div class="grid">
+      <div class="form-group">
+        <label>Weight (kg)</label>
+        <input id="weight" type="number" placeholder="5.5">
+      </div>
+      <div class="form-group">
+        <label>Number of Pieces</label>
+        <input id="pieces" type="number" placeholder="1">
+      </div>
+      <div class="form-group">
+        <label>Service Type</label>
+        <select id="service">
+          <option>Express</option>
+          <option>Standard</option>
+          <option>International Priority</option>
+          <option>Freight</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Package Type</label>
+        <select id="packageType">
+          <option>Document</option>
+          <option>Parcel</option>
+          <option>Electronics</option>
+          <option>Cargo</option>
+        </select>
+      </div>
     </div>
+
+    <div class="grid">
+      <div class="form-group">
+        <label>Shipment Date</label>
+        <input id="shipmentDate" type="date">
+      </div>
+      <div class="form-group">
+        <label>Pickup Date</label>
+        <input id="pickupDate" type="date">
+      </div>
+      <div class="form-group">
+        <label>Estimated Delivery</label>
+        <input id="estimatedDeliveryDate" type="date">
+      </div>
+    </div>
+
+    <h3>📋 Package Contents (Customs)</h3>
+    <div id="itemsContainer"></div>
+    <button type="button" onclick="addItem()" class="secondary" style="margin-bottom:20px;">+ Add Item</button>
+
+    <h3>📍 Tracking & Status</h3>
+    <div class="flex-row">
+      <div class="form-group">
+        <label>Current Status</label>
+        <select id="shipmentStatus">
+          <option>Shipment Created</option>
+          <option>Picked Up</option>
+          <option>In Transit</option>
+          <option>Customs Clearance</option>
+          <option>Out for Delivery</option>
+          <option>Delivered</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Current Location</label>
+        <input id="currentLocation" placeholder="e.g., New York Distribution Center">
+      </div>
+    </div>
+
+    <button onclick="createDelivery()" style="width:100%;margin-top:20px;padding:14px;">✓ Create Shipment</button>
   </div>
 
-  <h3>Package Information</h3>
-  <div class="grid">
-    <input id="weight" placeholder="Weight (kg)">
-    <input id="pieces" placeholder="Number of Pieces">
-    <select id="service">
-      <option>Express</option>
-      <option>Standard</option>
-      <option>International Priority</option>
-      <option>Freight</option>
-    </select>
-    <select id="packageType">
-      <option>Document</option>
-      <option>Parcel</option>
-      <option>Electronics</option>
-      <option>Cargo</option>
-    </select>
-    <input id="estimatedDeliveryDate" placeholder="Estimated Delivery Date">
+  <!-- Manage Deliveries Section -->
+  <div class="card">
+    <h2>📋 Manage Shipments</h2>
+    
+    <div class="search-box">
+      <input id="searchTracking" placeholder="🔍 Enter Tracking Number to search...">
+      <button onclick="searchDelivery()" class="secondary">Search</button>
+      <button onclick="getDeliveries()" class="secondary">Show All</button>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Tracking #</th>
+          <th>Sender</th>
+          <th>Receiver</th>
+          <th>Location</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="deliveriesTable">
+        <tr><td colspan="6" style="text-align:center;padding:30px;">No shipments loaded. Use "Show All" to load.</td></tr>
+      </tbody>
+    </table>
   </div>
-
-  <h3>Package Contents (Customs Information)</h3>
-  <div id="itemsContainer"></div>
-  <button type="button" onclick="addItem()">Add Another Item</button>
-
-  <h3>Shipment Status</h3>
-  <select id="shipmentStatus">
-    <option>Shipment Created</option>
-    <option>Picked Up</option>
-    <option>In Transit</option>
-    <option>Customs Clearance</option>
-    <option>Out for Delivery</option>
-    <option>Delivered</option>
-  </select>
-
-  <h3>Current Location</h3>
-  <input id="currentLocation" placeholder="Current Location of Package">
-
-  <button onclick="createDelivery()">Create Shipment</button>
-</div>
-
-<!-- Manage Deliveries Section -->
-<div class="card">
-  <h2>Manage Deliveries</h2>
-  
-  <div style="margin-bottom: 20px;">
-    <input id="searchTracking" placeholder="Enter Tracking Number">
-    <button onclick="searchDelivery()">Search</button>
-  </div>
-
-  <table>
-    <thead>
-      <tr>
-        <th>Tracking Number</th>
-        <th>Sender</th>
-        <th>Receiver</th>
-        <th>Current Location</th>
-        <th>Status</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody id="deliveriesTable">
-      <tr><td colspan="6" style="text-align:center;">No deliveries loaded.</td></tr>
-    </tbody>
-  </table>
-</div>
+</div> <!-- end adminContent -->
 
 <script>
+  // Country and area code mapping
+  const countryMap = {
+    'US': '+1',
+    'GB': '+44',
+    'CA': '+1',
+    'AU': '+61',
+    'NG': '+234',
+    'DE': '+49',
+    'FR': '+33',
+    'JP': '+81',
+    'CN': '+86',
+    'IN': '+91',
+  };
+
+  window.addEventListener('load', () => {
+    const token = sessionStorage.getItem('token');
+    if (token) {
+      showAdminContent();
+      loadCountries();
+      getDeliveries();
+    }
+  });
+
+  function showAdminContent() {
+    document.getElementById('loginSection').style.display = 'none';
+    document.getElementById('adminContent').style.display = 'block';
+    document.querySelector('.logout-btn').classList.add('show');
+  }
+
+  // Load countries for dropdowns
+  async function loadCountries() {
+    try {
+      const res = await fetch('/countries');
+      const countries = await res.json();
+      
+      const senderSelect = document.getElementById('senderCountry');
+      const receiverSelect = document.getElementById('receiverCountry');
+      
+      countries.forEach(country => {
+        const opt1 = new Option(country, country);
+        const opt2 = new Option(country, country);
+        senderSelect.add(opt1);
+        receiverSelect.add(opt2);
+      });
+    } catch (err) {
+      console.error('Error loading countries:', err);
+    }
+  }
+
+  // Load cities for sender
+  async function updateSenderCities() {
+    const country = document.getElementById('senderCountry').value;
+    if (!country || country === 'Select Country...') {
+      document.getElementById('senderCity').innerHTML = '<option>Select City...</option>';
+      return;
+    }
+    
+    try {
+      const res = await fetch(`/cities/${encodeURIComponent(country)}`);
+      const cities = await res.json();
+      const select = document.getElementById('senderCity');
+      select.innerHTML = '<option>Select City...</option>';
+      cities.slice(0, 50).forEach(city => {
+        select.add(new Option(city, city));
+      });
+    } catch (err) {
+      console.error('Error loading cities:', err);
+    }
+  }
+
+  // Load cities for receiver
+  async function updateReceiverCities() {
+    const country = document.getElementById('receiverCountry').value;
+    if (!country || country === 'Select Country...') {
+      document.getElementById('receiverCity').innerHTML = '<option>Select City...</option>';
+      return;
+    }
+    
+    try {
+      const res = await fetch(`/cities/${encodeURIComponent(country)}`);
+      const cities = await res.json();
+      const select = document.getElementById('receiverCity');
+      select.innerHTML = '<option>Select City...</option>';
+      cities.slice(0, 50).forEach(city => {
+        select.add(new Option(city, city));
+      });
+    } catch (err) {
+      console.error('Error loading cities:', err);
+    }
+  }
+
   function addItem() {
     const container = document.getElementById("itemsContainer");
     if (!container) {
@@ -121,26 +745,43 @@
       return;
     }
     const newRow = document.createElement("div");
-    newRow.classList.add("grid", "item-row");
+    newRow.classList.add("item-row");
     newRow.innerHTML = `
-      <input class="itemName" placeholder="Item Name">
-      <input class="itemDescription" placeholder="Item Description">
-      <input class="itemQuantity" placeholder="Quantity">
-      <input class="itemPrice" placeholder="Declared Value">
-      <select class="currency">
-        <option value="USD">$ USD</option>
-        <option value="EUR">€ EUR</option>
-        <option value="GBP">£ GBP</option>
-        <option value="NGN">₦ NGN</option>
-        <option value="CAD">$ CAD</option>
-        <option value="AUD">$ AUD</option>
-        <option value="JPY">¥ JPY</option>
-      </select>
+      <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:10px;">
+        <input class="itemName" placeholder="Item Name">
+        <input class="itemDescription" placeholder="Description">
+        <input class="itemQuantity" type="number" placeholder="Qty">
+        <input class="itemPrice" type="number" placeholder="$ Value">
+        <select class="currency">
+          <option value="USD">USD</option>
+          <option value="EUR">EUR</option>
+          <option value="GBP">GBP</option>
+          <option value="NGN">NGN</option>
+          <option value="CAD">CAD</option>
+          <option value="AUD">AUD</option>
+          <option value="JPY">JPY</option>
+        </select>
+      </div>
     `;
     container.appendChild(newRow);
   }
 
   async function createDelivery() {
+    const token = sessionStorage.getItem("token");
+    if (!token) {
+      alert("Please login first.");
+      return;
+    }
+
+    // Get phone numbers with country codes
+    const senderCountryCode = document.getElementById('senderCountryCode').value;
+    const senderPhoneNum = document.getElementById('senderPhone').value;
+    const senderFullPhone = senderCountryCode + senderPhoneNum;
+
+    const receiverCountryCode = document.getElementById('receiverCountryCode').value;
+    const receiverPhoneNum = document.getElementById('receiverPhone').value;
+    const receiverFullPhone = receiverCountryCode + receiverPhoneNum;
+
     const itemsContainer = document.querySelectorAll("#itemsContainer .item-row");
     const items = Array.from(itemsContainer).map(row => ({
       itemName: row.querySelector(".itemName").value,
@@ -151,66 +792,113 @@
     }));
 
     const data = {
-      senderName: document.getElementById("senderName").value,
-      senderPhone: document.getElementById("senderPhone").value,
+      senderFullName: document.getElementById("senderName").value,
+      senderPhone: senderFullPhone,
       senderEmail: document.getElementById("senderEmail").value,
       senderAddress: document.getElementById("senderAddress").value,
-      receiverName: document.getElementById("receiverName").value,
-      receiverPhone: document.getElementById("receiverPhone").value,
+      senderCountry: document.getElementById("senderCountry").value,
+      receiverFullName: document.getElementById("receiverName").value,
+      receiverPhone: receiverFullPhone,
       receiverEmail: document.getElementById("receiverEmail").value,
       receiverAddress: document.getElementById("receiverAddress").value,
-      origin: document.getElementById("origin").value,
-      destination: document.getElementById("destination").value,
-      weight: document.getElementById("weight").value,
-      pieces: document.getElementById("pieces").value,
+      receiverCountry: document.getElementById("receiverCountry").value,
+      weight: parseFloat(document.getElementById("weight").value) || 0,
       service: document.getElementById("service").value,
       packageType: document.getElementById("packageType").value,
+      shipmentDate: document.getElementById("shipmentDate").value,
+      pickupDate: document.getElementById("pickupDate").value,
       estimatedDeliveryDate: document.getElementById("estimatedDeliveryDate").value,
-      shipmentStatus: document.getElementById("shipmentStatus").value,
+      status: document.getElementById("shipmentStatus").value,
       currentLocation: document.getElementById("currentLocation").value,
       items: items
     };
 
-    const res = await fetch("/admin/create-delivery", {
+    const res = await fetch("/admin/deliveries", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + token
+      },
       body: JSON.stringify(data)
     });
 
     const result = await res.json();
-    alert("Shipment Created. Tracking Number: " + result.trackingNumber);
+    if (res.ok) {
+      alert("✓ Shipment Created!\nTracking #: " + result.trackingNumber);
+      // Clear form
+      document.querySelectorAll('input[type="text"], input[type="email"], input[type="number"]').forEach(input => input.value = '');
+      document.getElementById('itemsContainer').innerHTML = '';
+      getDeliveries();
+    } else {
+      alert("❌ " + (result.error || "Failed to create shipment"));
+    }
+  }
+
+  
+  async function getDeliveries() {
+    const token = sessionStorage.getItem("token");
+    const res = await fetch('/admin/deliveries', {
+      headers: { "Authorization": "Bearer " + token }
+    });
+    if (!res.ok) return;
+    const deliveries = await res.json();
+    renderTable(deliveries);
   }
 
   // Manage Deliveries
   async function searchDelivery() {
-    const tracking = document.getElementById("searchTracking").value;
-    const url = tracking ? `/admin/deliveries/${tracking}` : '/admin/deliveries';
-    const res = await fetch(url);
-    const deliveries = await res.json();
-    const table = document.getElementById("deliveriesTable");
+    const token = sessionStorage.getItem("token");
+    if (!token) {
+      alert("Please login first");
+      return;
+    }
+    const value = document.getElementById("searchTracking").value.trim();
+    if (!value) {
+      alert("Enter tracking number");
+      return;
+    }
+    const res = await fetch(`/admin/deliveries/${value}`, {
+      headers: { "Authorization": "Bearer " + token }
+    });
+    if (!res.ok) {
+      const err = await res.json();
+      alert("❌ " + (err.message || 'Tracking not found'));
+      return;
+    }
+    const delivery = await res.json();
+    renderTable([delivery]);
+  }
 
+  function renderTable(deliveries) {
+    const table = document.getElementById("deliveriesTable");
+    
     if (!deliveries || deliveries.length === 0) {
-      table.innerHTML = `<tr><td colspan="6" style="text-align:center;">No deliveries found.</td></tr>`;
+      table.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:30px;">No shipments found.</td></tr>`;
       return;
     }
 
     table.innerHTML = deliveries.map(d => `
       <tr>
-        <td>${d.trackingNumber}</td>
-        <td>${d.senderName}</td>
-        <td>${d.receiverName}</td>
-        <td><input value="${d.currentLocation || ''}" id="loc-${d.trackingNumber}" placeholder="Current Location"></td>
+        <td><strong>${d.trackingNumber}</strong></td>
+        <td>${d.senderFullName || ''}</td>
+        <td>${d.receiverFullName || ''}</td>
         <td>
-          <select id="status-${d.trackingNumber}">
-            <option ${d.shipmentStatus === 'Shipment Created' ? 'selected' : ''}>Shipment Created</option>
-            <option ${d.shipmentStatus === 'Picked Up' ? 'selected' : ''}>Picked Up</option>
-            <option ${d.shipmentStatus === 'In Transit' ? 'selected' : ''}>In Transit</option>
-            <option ${d.shipmentStatus === 'Customs Clearance' ? 'selected' : ''}>Customs Clearance</option>
-            <option ${d.shipmentStatus === 'Out for Delivery' ? 'selected' : ''}>Out for Delivery</option>
-            <option ${d.shipmentStatus === 'Delivered' ? 'selected' : ''}>Delivered</option>
+          <input value="${d.currentLocation || ''}" id="loc-${d.trackingNumber}" placeholder="Update..." style="width:100%;padding:6px;border:1px solid #e0e0e0;">
+        </td>
+        <td>
+          <select id="status-${d.trackingNumber}" style="width:100%;padding:6px;border:1px solid #e0e0e0;">
+            <option ${(d.status === 'Shipment Created') ? 'selected' : ''}>Shipment Created</option>
+            <option ${(d.status === 'Picked Up') ? 'selected' : ''}>Picked Up</option>
+            <option ${(d.status === 'In Transit') ? 'selected' : ''}>In Transit</option>
+            <option ${(d.status === 'Customs Clearance') ? 'selected' : ''}>Customs Clearance</option>
+            <option ${(d.status === 'Out for Delivery') ? 'selected' : ''}>Out for Delivery</option>
+            <option ${(d.status === 'Delivered') ? 'selected' : ''}>Delivered</option>
           </select>
         </td>
-        <td><button onclick="updateDelivery('${d.trackingNumber}')">Update</button></td>
+        <td>
+          <button onclick="updateDelivery('${d.trackingNumber}')" class="secondary" style="padding:6px 12px;font-size:12px;width:auto;">Update</button>
+          <button onclick="deleteDelivery('${d.trackingNumber}')" class="danger" style="padding:6px 12px;font-size:12px;width:auto;">Delete</button>
+        </td>
       </tr>
     `).join('');
   }
@@ -218,6 +906,11 @@
 async function adminLogin() {
   const username = document.getElementById("username").value;
   const password = document.getElementById("password").value;
+
+  if (!username || !password) {
+    alert("Please enter username and password");
+    return;
+  }
 
   const res = await fetch("/admin/login", {
     method: "POST",
@@ -229,23 +922,68 @@ async function adminLogin() {
 
   if (res.ok) {
     sessionStorage.setItem("token", data.token);
-    alert("Login successful!");
+    alert("✓ Login successful!");
+    showAdminContent();
+    loadCountries();
+    getDeliveries();
   } else {
-    alert(data.message || "Login failed");
+    alert("❌ " + (data.message || "Login failed"));
   }
 }
 
-async function getDeliveries() {
-  const token = sessionStorage.getItem("token");
+function logout() {
+  sessionStorage.removeItem("token");
+  document.getElementById("adminContent").style.display = "none";
+  document.getElementById("loginSection").style.display = "flex";
+  document.querySelector('.logout-btn').classList.remove('show');
+  document.getElementById("username").value = "";
+  document.getElementById("password").value = "";
+}
 
-  const res = await fetch("/admin/deliveries", {
-    headers: { "Authorization": "Bearer " + token }
+// update and delete helpers
+async function updateDelivery(trackingNumber) {
+  const token = sessionStorage.getItem("token");
+  const status = document.getElementById(`status-${trackingNumber}`).value;
+  const currentLocation = document.getElementById(`loc-${trackingNumber}`).value;
+
+  const res = await fetch(`/admin/deliveries/${trackingNumber}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer " + token
+    },
+    body: JSON.stringify({ status, currentLocation })
   });
 
-  const deliveries = await res.json();
-  console.log(deliveries);
+  const data = await res.json();
+  if (res.ok) {
+    alert("✓ Updated successfully");
+    getDeliveries();
+  } else {
+    alert("❌ " + (data.message || "Update failed"));
+  }
 }
-</script>
+
+async function deleteDelivery(trackingNumber) {
+  const token = sessionStorage.getItem("token");
+  if (!confirm('⚠️ Delete this shipment? This cannot be undone.')) return;
+
+  const res = await fetch(`/admin/deliveries/${trackingNumber}`, {
+    method: "DELETE",
+    headers: {
+      "Authorization": "Bearer " + token
+    }
+  });
+  const data = await res.json();
+  if (res.ok) {
+    alert("✓ Deleted successfully");
+    getDeliveries();
+  } else {
+    alert("❌ " + (data.message || "Delete failed"));
+  }
+}
+
 </script>
 </body>
 </html>
+

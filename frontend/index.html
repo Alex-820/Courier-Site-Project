@@ -1,915 +1,772 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Vertex Express</title>
-
-<style>
-:root{
-  --brand-purple:#4B0082;
-  --brand-orange:#FF6A00;
-  --gray:#444;
-  --light:#f4f6f9;
-  --white:#ffffff;
-}
-
-body{
-  margin:0;
-  font-family:'Segoe UI',sans-serif;
-  background:var(--light);
-  color:var(--gray);
-  overflow-x:hidden;
-}
-
-h1,h2,h3{color:var(--brand-purple);}
-
-/* NAV */
-nav{
-  background:white;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding:15px 60px;
-  box-shadow:0 3px 12px rgba(0,0,0,0.05);
-  position:sticky;
-  top:0;
-  z-index:1000;
-}
-
-/* === Modern Logo Upgrade === */
-.logo{
-  display:flex;
-  align-items:center;
-  gap:12px;
-  font-size:unset;
-  font-weight:unset;
-}
-
-.logo-mark{
-  width:40px;
-  height:40px;
-  background:linear-gradient(135deg,var(--brand-purple),var(--brand-orange));
-  border-radius:10px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  color:white;
-  font-weight:700;
-  font-size:18px;
-  box-shadow:0 6px 16px rgba(0,0,0,0.15);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.logo-mark:hover{
-  transform: scale(1.1) rotate(5deg);
-  box-shadow:0 10px 20px rgba(0,0,0,0.2);
-}
-
-.logo-text{
-  display:flex;
-  flex-direction:column;
-  line-height:1;
-}
-
-.logo-text .brand-name{
-  font-size:20px;
-  font-weight:700;
-  color:var(--brand-purple);
-  letter-spacing:0.5px;
-  transition: color 0.3s ease;
-}
-
-.logo-text .brand-sub{
-  font-size:11px;
-  letter-spacing:3px;
-  text-transform:uppercase;
-  color:var(--brand-orange);
-  font-weight:600;
-  transition: color 0.3s ease;
-}
-
-.logo:hover .brand-name {
-  color:#6a00ff;
-}
-
-.logo:hover .brand-sub {
-  color:#ff8500;
-}
-
-nav a{
-  margin-left:25px;
-  text-decoration:none;
-  color:var(--gray);
-  font-weight:500;
-}
-nav a:hover{color:var(--brand-orange);}
-
-/* HEADER */
-header{
-  position:relative;
-  background:url('images/W2.jpeg') center center / cover no-repeat;
-  color:white;
-  text-align:center;
-  padding:80px 20px;
-}
-
-/* Dark overlay for readability */
-header::before{
-  content:"";
-  position:absolute;
-  inset:0;
-  background:rgba(0,0,0,0.45);
-}
-
-header h1,
-header p,
-.accent-line{
-  position:relative;
-  z-index:2;
-}
-  color:white;
-  text-align:center;
-  padding:40px 20px 60px;
-}
-
-header h1{font-size:30px;margin-bottom:8px;}
-header p{font-size:16px;}
-
-.accent-line{
-  width:120px;
-  height:4px;
-  background:var(--brand-orange);
-  margin:15px auto;
-}
-
-/* TRACKING */
-.tracking-card{
-  background:white;
-  max-width:750px;
-  margin:40px auto 60px;
-  padding:40px;
-  border-radius:12px;
-  box-shadow:0 25px 50px rgba(0,0,0,0.15);
-  text-align:center;
-  border-top:5px solid var(--brand-orange);
-}
-
-.tracking-card input{
-  padding:14px;
-  width:60%;
-  border-radius:8px;
-  border:1px solid #ddd;
-  font-size:15px;
-  transition:all 0.3s ease;
-}
-
-.tracking-card input:focus{
-  border:1px solid var(--brand-orange);
-  box-shadow:0 0 10px rgba(255,106,0,0.3);
-  outline:none;
-}
-
-.tracking-card button{
-  padding:14px 25px;
-  background:var(--brand-orange);
-  border:none;
-  color:white;
-  border-radius:6px;
-  cursor:pointer;
-  font-weight:bold;
-}
-.tracking-card button:hover{background:var(--brand-purple);}
-
-.tracking-steps {
-  display: flex;
-  flex-direction: column;
-  margin-top: 20px;
-}
-
-.step {
-  position: relative;
-  padding-left: 30px;
-  margin-bottom: 20px;
-}
-
-.step::before {
-  content: "";
-  position: absolute;
-  left: 10px;
-  top: 0;
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: #ccc;
-}
-
-.step.active::before {
-  background: var(--brand-orange);
-}
-
-.step-info {
-  font-size: 0.9em;
-  color: #555;
-}
-
-#live-update{
-  margin-top:15px;
-  font-size:14px;
-  color:var(--brand-purple);
-}
-
-/* STATS */
-.stats{
-  background:linear-gradient(90deg,var(--brand-purple),var(--brand-orange));
-  color:white;
-  padding:50px 20px;
-  display:flex;
-  justify-content:space-around;
-  flex-wrap:wrap;
-  text-align:center;
-}
-.stat-number{
-  font-size:38px;
-  font-weight:bold;
-}
-
-/* SECTIONS */
-section{
-  max-width:1100px;
-  margin:80px auto;
-  padding:20px;
-}
-
-/* SERVICES */
-.service-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-  gap:25px;
-}
-.service-card{
-  background:white;
-  border-radius:12px;
-  box-shadow:0 12px 28px rgba(0,0,0,0.08);
-  text-align:center;
-  padding:30px 20px;
-  transition:0.3s;
-}
-.service-card:hover{
-  transform:translateY(-8px);
-}
-.service-icon{
-  font-size:40px;
-  margin-bottom:15px;
-  display:inline-block;
-  animation: floatIcon 3s ease-in-out infinite;
-}
-
-@keyframes floatIcon{
-  0%,100%{
-    transform:translateY(0);
-  }
-  50%{
-    transform:translateY(-8px);
-  }
-}
-
-/* WHY VERTEX COVER SECTION */
-.why-vertex{
-  position:relative;
-  background:url('images/CD.jpg') center center / cover no-repeat;
-  padding:100px 30px;
-  border-radius:14px;
-  overflow:hidden;
-  color:white;
-}
-
-/* Dark overlay for readability */
-.why-vertex::before{
-  content:"";
-  position:absolute;
-  inset:0;
-  background:linear-gradient(
-    rgba(0,0,0,0.75),
-    rgba(0,0,0,0.65)
-  );
-  z-index:0;
-}
-
-/* Keep content above overlay */
-.why-vertex > *{
-  position:relative;
-  z-index:2;
-}
-
-.why-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-  gap:30px;
-  margin-top:40px;
-}
-
-.why-card{
-  padding:25px;
-  border-left:4px solid var(--brand-orange);
-  transition:0.3s;
-}
-.why-card:hover{
-  background:#fafafa;
-  transform:translateY(-5px);
-}
-
-.why-card{
-  padding:25px;
-  background:rgba(255,255,255,0.08);
-  backdrop-filter:blur(4px);
-  border-left:4px solid var(--brand-orange);
-  transition:0.3s;
-}
-
-.why-card:hover{
-  transform:translateY(-5px);
-  background:rgba(255,255,255,0.15);
-}
-
-.why-vertex h2,
-.why-vertex p{
-  text-shadow:0 2px 10px rgba(0,0,0,0.6);
-}
-
-/* TRUST BADGES */
-.trust{
-  text-align:center;
-  margin-top:50px;
-}
-.trust span{
-  display:inline-block;
-  margin:10px 20px;
-  font-weight:bold;
-  color:var(--brand-purple);
-}
-
-/* PICKUP */
-#pickup{
-  background:white;
-  border-radius:12px;
-  padding:40px;
-  box-shadow:0 12px 28px rgba(0,0,0,0.08);
-}
-
-#pickup input, #pickup select{
-  width:100%;
-  padding:10px;
-  margin-bottom:15px;
-  border-radius:6px;
-  border:1px solid #ccc;
-}
-
-#pickup button{
-  background:var(--brand-orange);
-  color:white;
-  padding:12px 25px;
-  border:none;
-  border-radius:6px;
-  font-weight:bold;
-  cursor:pointer;
-}
-#pickup button:hover{background:var(--brand-purple);}
-
-footer{
-  background:var(--brand-purple);
-  color:white;
-  text-align:center;
-  padding:25px;
-}
-
-/* === Logo Responsive Tweaks === */
-@media (max-width: 768px) {
-  .logo {
-    gap:8px;
-  }
-
-  .logo-mark {
-    width:32px;
-    height:32px;
-    font-size:16px;
-  }
-
-  .logo-text .brand-name {
-    font-size:16px;
-  }
-
-  .logo-text .brand-sub {
-    font-size:9px;
-    letter-spacing:2px;
-  }
-
-  nav {
-    padding:12px 20px;
-  }
-
-  nav a {
-    margin-left:15px;
-    font-size:14px;
-  }
-}
-/* === Micro Animations: Cards === */
-.service-card, .why-card {
-  transition: transform 0.35s ease, box-shadow 0.35s ease;
-}
-
-.service-card:hover, .why-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
-}
-
-/* Hero background zoom animation */
-header{
-  animation: heroZoom 12s ease-in-out infinite alternate;
-}
-
-@keyframes heroZoom{
-  0%{
-    background-size:100%;
-  }
-  100%{
-    background-size:110%;
-  }
-}
-
-section{
-  opacity:0;
-  transform:translateY(30px);
-  animation:fadeUp 1s forwards;
-}
-
-@keyframes fadeUp{
-  to{
-    opacity:1;
-    transform:translateY(0);
-  }
-}
-
-.truck {
-  font-size: 40px;
-  position: absolute;
-  top: 20px; /* adjust as needed */
-  left: -50px; /* start just outside left */
-  animation: drive 6s linear infinite;
-}
-
-@keyframes drive {
-  0% {
-    left: -50px;
-    transform: rotateY(0deg); /* normal facing right */
-  }
-  100% {
-    left: calc(100% + 50px);
-    transform: rotateY(0deg); /* keep same direction */
-  }
-}
-
-/* Shipment Timeline */
-.timeline{
-  margin-top:25px;
-  border-left:3px solid var(--brand-orange);
-  padding-left:20px;
-}
-
-.timeline-event{
-  margin-bottom:20px;
-  position:relative;
-}
-
-.timeline-event::before{
-  content:"";
-  position:absolute;
-  left:-28px;
-  top:5px;
-  width:12px;
-  height:12px;
-  background:var(--brand-orange);
-  border-radius:50%;
-}
-
-.timeline-date{
-  font-size:12px;
-  color:#888;
-}
-
-.timeline-location{
-  font-weight:bold;
-  color:var(--brand-purple);
-}
-
-.about-company {
-  position: relative;
-  padding: 80px 20px;
-  text-align: center;
-  border-radius: 12px;
-  max-width: 1100px;
-  margin: 60px auto;
-  color: white;
-  overflow: hidden;
-  background: url('images/ZZZ.jpeg') center center / cover no-repeat; /* Your background image */
-}
-
-.about-company::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: rgba(0,0,0,0.55); /* Dark overlay for readability */
-  z-index: 0;
-}
-
-.about-content {
-  position: relative;
-  z-index: 2;
-}
-
-.about-content h2 {
-  color: #fff;
-  margin-bottom: 10px;
-  font-size: 32px;
-}
-
-.about-content p {
-  color: #f0f0f0;
-  margin-bottom: 40px;
-  font-size: 16px;
-}
-
-.about-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 30px;
-}
-
-.about-card {
-  background: rgba(255,255,255,0.08);
-  backdrop-filter: blur(6px);
-  border-radius: 12px;
-  padding: 25px 20px;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  color: white;
-}
-
-.about-card:hover {
-  transform: translateY(-5px);
-  background: rgba(255,255,255,0.15);
-  box-shadow: 0 12px 30px rgba(0,0,0,0.2);
-}
-
-.about-card h3 {
-  margin-bottom: 12px;
-  font-size: 20px;
-}
-
-.about-card p {
-  font-size: 14px;
-  line-height: 1.5;
-}
-
-</style>
+    <meta charset="utf-8">
+    <title>Vertex Express - Logistics Company Website Template</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="Free HTML Templates" name="keywords">
+    <meta content="Free HTML Templates" name="description">
+
+    <!-- Favicon -->
+    <link href="img/favicon.ico" rel="icon">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+
+<!-- Bootstrap CSS -->
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- Template CSS -->
+<link href="css/style.css" rel="stylesheet">
 </head>
-
 <body>
 
-<nav>
-  <div class="logo">
-    <div class="logo-mark">V</div>
-    <div class="logo-text">
-      <div class="brand-name">Vertex</div>
-      <div class="brand-sub">Express</div>
+   <!-- Navbar -->
+<div class="container-fluid p-0">
+    <nav class="navbar navbar-expand-lg bg-light navbar-light shadow-sm sticky-top px-4">
+        
+        <!-- Logo Mark + Company Name -->
+        <a href="index.html" class="navbar-brand d-flex align-items-center">
+            <svg class="logo-mark" width="40" height="40" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <polygon class="logo-v" points="10,90 50,10 90,90" fill="#4b3f72"/>
+                <polygon class="logo-arrow" points="55,25 85,25 50,90" fill="#ff6f00"/>
+            </svg>
+            <span class="ml-2 font-weight-bold" style="font-size: 1.5rem; color:#4b3f72;">VERTEX</span>
+            <span class="ml-1 font-weight-bold" style="font-size: 1.1rem; color:#ff6f00;">EXPRESS</span>
+        </a>
+
+        <!-- Hamburger Menu on Top Right -->
+        <button class="menu-btn ml-auto" id="menuBtn">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </nav>
+
+   <!-- Slide Menu -->
+<div id="mobileMenu" class="mobile-menu">
+
+    <div class="menu-header">
+        <h4>Vertex Express</h4>
+        <p>Global Logistics Network</p>
     </div>
-  </div>
-  <div>
-    <a href="#services">Services</a>
-    <a href="#pickup">Pickup</a>
-    <a href="#contact">Contact</a>
-  </div>
-</nav>
 
-<header>
-  <h1>Fast. Reliable. Worldwide.</h1>
-  <p>Enterprise-grade global logistics solutions</p>
-  <div class="accent-line"></div>
-</header>
+    <div class="menu-divider"></div>
 
-<div class="tracking-card">
-  <h2>Track Your Shipment</h2>
- <input type="text" id="trackingInput" placeholder="Enter tracking number">
-<button onclick="trackPackage()">Track</button>
+    <a href="index.html"><i class="fas fa-home"></i> Home</a>
+    <a href="about.html"><i class="fas fa-building"></i> About</a>
+    <a href="service.html"><i class="fas fa-truck"></i> Services</a>
+    <a href="blog.html"><i class="fas fa-newspaper"></i> Blog</a>
+    <a href="contact.html"><i class="fas fa-envelope"></i> Contact</a>
+
+    <div class="menu-divider"></div>
+
+    <div class="menu-footer">
+        <p>Reliable Global Logistics Partner</p>
+    </div>
+
 </div>
 
-<div class="truck">🚚</div>
 
-<div id="shipmentDetails" style="display:none; margin-top:20px; border:1px solid #ccc; padding:15px; border-radius:8px;">
-  <div id="detailsContent"></div>
+   <!-- Header Start -->
+<div class="jumbotron jumbotron-fluid mb-5">
+    <div class="container text-center py-5">
+        <h1 class="text-white display-3 mb-5">Vertex Express</h1>
+
+        <h1 class="text-primary mb-4">Safe, Faster and Reliable Logistics Services</h1>
+        
+        <div class="mx-auto" style="width: 100%; max-width: 600px;">
+            <div class="input-group">
+
+                <input id="trackingNumberInput"
+                       type="text"
+                       class="form-control border-light"
+                       style="padding:30px;"
+                       placeholder="Tracking ID">
+
+                <div class="input-group-append">
+                    <button onclick="trackShipment()" class="btn btn-primary px-3">
+                        Track & Trace
+                    </button>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+<!-- Header End -->
+
+<!-- Tracking Result -->
+<div class="container mb-5">
+
+<div id="trackingResult" class="card shadow-lg" style="display:none">
+
+<div class="card-body">
+
+<h3 class="text-primary mb-4">Shipment Tracking</h3>
+
+<!-- BARCODE -->
+<div class="text-center mb-4">
+<svg id="barcode"></svg>
+<p id="trackingNumberDisplay" class="font-weight-bold"></p>
 </div>
 
-<div class="stats">
-  <div>
-    <div class="stat-number" data-target="10000">0</div>
-    <div>Packages Delivered</div>
-  </div>
-  <div>
-    <div class="stat-number" data-target="200">0</div>
-    <div>Countries Covered</div>
-  </div>
-  <div>
-    <div class="stat-number">24/7</div>
-    <div>Live Tracking</div>
-  </div>
-  <div>
-    <div class="stat-number">100%</div>
-    <div>Secure Handling</div>
-  </div>
+<hr>
+
+<!-- SHIPMENT SUMMARY -->
+<h5 class="text-primary">Shipment Summary</h5>
+
+<p><strong>Status:</strong> <span id="status"></span></p>
+
+<p><strong>Current Location:</strong> <span id="location"></span></p>
+
+<p><strong>Estimated Delivery:</strong> <span id="deliveryDate"></span></p>
+
+<hr>
+
+<!-- SENDER INFO -->
+<h5 class="text-primary">Sender Information</h5>
+
+<p id="senderInfo"></p>
+
+<hr>
+
+<!-- RECEIVER INFO -->
+<h5 class="text-primary">Receiver Information</h5>
+
+<p id="receiverInfo"></p>
+
+<hr>
+
+<!-- PACKAGE DETAILS -->
+<h5 class="text-primary">Package Details</h5>
+
+<p id="packageInfo"></p>
+
+<hr>
+
+<!-- TRACKING TIMELINE -->
+<h5 class="text-primary">Tracking Timeline</h5>
+
+<ul id="timeline" class="list-group mb-4"></ul>
+
+<hr>
+
+<!-- TRACKING HISTORY -->
+<h5 class="text-primary">Tracking History</h5>
+
+<ul id="history" class="list-group"></ul>
+
 </div>
 
-<section id="services">
-  <h2>Our Services</h2>
-  <div class="service-grid">
-    <div class="service-card">
-      <div class="service-icon">🚚</div>
-      <h3>Standard Delivery</h3>
-      <p>Affordable and dependable shipping solutions.</p>
+</div>
+
+</div>
+
+    <!-- About Start -->
+    <div class="container-fluid py-5">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-5 pb-4 pb-lg-0">
+                    <img class="img-fluid w-100" src="img/about.jpg" alt="">
+                    <div class="bg-primary text-dark text-center p-4">
+                        <h3 class="m-0">25+ Years Experience</h3>
+                    </div>
+                </div>
+                <div class="col-lg-7">
+                    <h6 class="text-primary text-uppercase font-weight-bold">About Us</h6>
+                    <h1 class="mb-4">Trusted & Faster Logistic Service Provider</h1>
+                    <p class="mb-4">Vertex Express has been delivering trust and efficiency for over 25 years. Our mission is to provide fast, secure, and reliable logistics solutions for businesses and individuals. We combine advanced technology with professional service to ensure your shipments reach their destination safely and on time.
+                    <a href="about.html" class="btn btn-primary mt-2 py-2 px-4">Learn More</a>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="service-card">
-      <div class="service-icon">⚡</div>
-      <h3>Express Delivery</h3>
-      <p>Priority handling with faster transit times.</p>
+    <!-- About End -->
+
+
+    <!-- Features Start -->
+    <div class="container-fluid bg-secondary my-5">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-5">
+                    <img class="img-fluid w-100" src="img/feature.jpg" alt="">
+                </div>
+                <div class="col-lg-7 py-5 py-lg-0">
+                    <h6 class="text-primary text-uppercase font-weight-bold">Why Choose Us</h6>
+                    <h1 class="mb-4">Fast, Safe and Trusted Logistics Services</h1>
+                    <p class="mb-4">At Vertex Express, we prioritize your shipments with unmatched speed, safety, and reliability. Whether it’s air, land, or sea freight, our team ensures every delivery is handled with care and precision.
+                       <li><h6><i class="far fa-dot-circle text-primary mr-3"></i>Industry-Leading Expertise</h6></li>
+<li><h6><i class="far fa-dot-circle text-primary mr-3"></i>Emergency & Express Services</h6></li>
+<li><h6><i class="far fa-dot-circle text-primary mr-3"></i>24/7 Customer Support</h6></li>
+                    </ul>
+                    <a href="" class="btn btn-primary mt-3 py-2 px-4">Learn More</a>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="service-card">
-      <div class="service-icon">✈️</div>
-      <h3>International Priority</h3>
-      <p>Seamless cross-border logistics worldwide.</p>
+    <!-- Features End -->
+
+
+    <!-- Services Start -->
+    <div class="container-fluid pt-5">
+        <div class="container">
+            <div class="text-center pb-2">
+                <h6 class="text-primary text-uppercase font-weight-bold">Our Services</h6>
+                <h1 class="mb-4">Best Logistic Services</h1>
+            </div>
+            <div class="row">
+                <div class="col-lg-3 col-md-6 text-center mb-5">
+                    <div class="d-flex align-items-center justify-content-center bg-primary mb-4 p-4">
+                        <i class="fa fa-2x fa-plane text-dark pr-3"></i>
+                        <h6 class="text-white font-weight-medium m-0">Air Freight</h6>
+                    </div>
+                    <p>Fast and secure air cargo solutions for domestic and international shipments.</p>
+                    <a class="border-bottom text-decoration-none" href="">Read More</a>
+                </div>
+                <div class="col-lg-3 col-md-6 text-center mb-5">
+                    <div class="d-flex align-items-center justify-content-center bg-primary mb-4 p-4">
+                        <i class="fa fa-2x fa-ship text-dark pr-3"></i>
+                        <h6 class="text-white font-weight-medium m-0">Ocean Freight</h6>
+                    </div>
+                    <p>Reliable ocean freight services with full tracking and customs support.</p>
+                    <a class="border-bottom text-decoration-none" href="">Read More</a>
+                </div>
+                <div class="col-lg-3 col-md-6 text-center mb-5">
+                    <div class="d-flex align-items-center justify-content-center bg-primary mb-4 p-4">
+                        <i class="fa fa-2x fa-truck text-dark pr-3"></i>
+                        <h6 class="text-white font-weight-medium m-0">Land Transport</h6>
+                    </div>
+                    <p>Door-to-door land transport ensuring your goods arrive safely and on time</p>
+                    <a class="border-bottom text-decoration-none" href="">Read More</a>
+                </div>
+                <div class="col-lg-3 col-md-6 text-center mb-5">
+                    <div class="d-flex align-items-center justify-content-center bg-primary mb-4 p-4">
+                        <i class="fa fa-2x fa-store text-dark pr-3"></i>
+                        <h6 class="text-white font-weight-medium m-0">Cargo Storage</h6>
+                    </div>
+                    <p>Secure and reliable cargo storage solutions for your goods when they're not in transit.</p>
+                    <a class="border-bottom text-decoration-none" href="">Read More</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Services End -->
+
+    <!-- Global Logistics Stats-->
+   <section class="global-stats">
+    
+    <div class="container">
+        
+        <h2 class="text-center mb-5">Global Logistics Network</h2>
+        
+        <div class="row text-center">
+            
+            <div class="col-md-3">
+                <h1 class="stat-number" data-target="157">0</h1>
+                <p>Countries with Active Operations</p>
+            </div>
+            
+            <div class="col-md-3">
+                <h1 class="stat-number" data-target="4865">0</h1>
+                <p>Warehouse Locations</p>
+            </div>
+            
+            <div class="col-md-3">
+                <h1 class="stat-number" data-target="28">0</h1>
+                <p>Square Meters Storage (Million)</p>
+            </div>
+            
+            <div class="col-md-3">
+                <h1 class="stat-number" data-target="13200">0</h1>
+                <p>Supply Chain Experts (Thousands)</p>
+            </div>
+        </div>
+    </section>  
+
+    <!-- Blog Start -->
+    <div class="container-fluid pt-5">
+        <div class="container">
+            <div class="text-center pb-2">
+                <h6 class="text-primary text-uppercase font-weight-bold">Our Blog</h6>
+                <h1 class="mb-4">Latest From Blog</h1>
+            </div>
+            <div class="row">
+                <div class="col-md-6 mb-5">
+                    <div class="position-relative">
+                        <img class="img-fluid w-100" src="img/blog-1.jpg" alt="">
+                        <div class="position-absolute bg-primary d-flex flex-column align-items-center justify-content-center rounded-circle"
+                            style="width: 60px; height: 60px; bottom: -30px; right: 30px;">
+                            <h4 class="font-weight-bold mb-n1">01</h4>
+                            <small class="text-white text-uppercase">Jan</small>
+                        </div>
+                    </div>
+                    <div class="bg-secondary" style="padding: 30px;">
+                        <div class="d-flex mb-3">
+                            <div class="d-flex align-items-center">
+                                <img class="rounded-circle" style="width: 40px; height: 40px;" src="img/user.jpg" alt="">
+                                <a class="text-muted ml-2" href="">John Doe</a>
+                            </div>
+                            <div class="d-flex align-items-center ml-4">
+                                <i class="far fa-bookmark text-primary"></i>
+                                <a class="text-muted ml-2" href="">Web Design</a>
+                            </div>
+                        </div>
+<h4 class="font-weight-bold mb-3">How Vertex Express Ensures On-Time Delivery</h4>
+<p>Discover the systems and technologies Vertex Express uses to track shipments and guarantee timely delivery worldwide.</p>                        <a class="border-bottom border-primary text-uppercase text-decoration-none" href="">Read More <i class="fa fa-angle-right"></i></a>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-5">
+                    <div class="position-relative">
+                        <img class="img-fluid w-100" src="img/blog-2.jpg" alt="">
+                        <div class="position-absolute bg-primary d-flex flex-column align-items-center justify-content-center rounded-circle"
+                            style="width: 60px; height: 60px; bottom: -30px; right: 30px;">
+                            <h4 class="font-weight-bold mb-n1">01</h4>
+                            <small class="text-white text-uppercase">Jan</small>
+                        </div>
+                    </div>
+                    <div class="bg-secondary" style="padding: 30px;">
+                        <div class="d-flex mb-3">
+                            <div class="d-flex align-items-center">
+                                <img class="rounded-circle" style="width: 40px; height: 40px;" src="img/user.jpg" alt="">
+                                <a class="text-muted ml-2" href="">John Doe</a>
+                            </div>
+                            <div class="d-flex align-items-center ml-4">
+                                <i class="far fa-bookmark text-primary"></i>
+                                <a class="text-muted ml-2" href="">Web Design</a>
+                            </div>
+                        </div>
+                        <h4 class="font-weight-bold mb-3">Top 5 Tips for Safe Packaging</h4>
+<p>Learn expert advice from Vertex Express on how to pack goods securely for shipping, reducing damage and delays.</p>
+                        <a class="border-bottom border-primary text-uppercase text-decoration-none" href="">Read More <i class="fa fa-angle-right"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Blog End -->
+
+    <section id="pickup" class="pickup-elite py-5">
+  <div class="container">
+    <div class="pickup-card mx-auto p-5 shadow-sm rounded">
+
+      <h2 class="text-center mb-5">Schedule a Pickup</h2>
+
+      <form id="pickupForm">
+
+        <!-- Sender Information -->
+        <h3>Sender Information</h3>
+        <label for="fullName">Full Name *</label>
+        <input type="text" id="fullName" name="fullName" placeholder="John Doe / Company Name" required>
+
+        <label for="address">Address *</label>
+        <input type="text" id="address" name="address" placeholder="City, State, ZIP, Country" required>
+
+        <label for="phone">Phone Number *</label>
+        <input type="tel" id="phone" name="phone" placeholder="+1 234 567 8900" required>
+
+        <label for="email">Email *</label>
+        <input type="email" id="email" name="email" placeholder="you@example.com" required>
+
+        <!-- Receiver Information -->
+        <h3>Receiver Information</h3>
+        <label for="receiverName">Receiver Name / Company</label>
+        <input type="text" id="receiverName" name="receiverName" placeholder="Receiver Name / Company">
+
+        <label for="receiverAddress">Receiver Address</label>
+        <input type="text" id="receiverAddress" name="receiverAddress" placeholder="City, State, ZIP, Country">
+
+        <label for="receiverPhone">Receiver Phone</label>
+        <input type="tel" id="receiverPhone" name="receiverPhone" placeholder="+1 234 567 8900">
+
+        <label for="receiverEmail">Receiver Email</label>
+        <input type="email" id="receiverEmail" name="receiverEmail" placeholder="receiver@example.com">
+
+        <!-- Package Details -->
+        <h3>Package Details</h3>
+        <label for="packageCount">Number of Packages *</label>
+        <input type="number" id="packageCount" name="packageCount" min="1" placeholder="e.g., 2" required>
+
+        <label for="packageWeight">Weight (kg/lbs) *</label>
+        <input type="text" id="packageWeight" name="packageWeight" placeholder="e.g., 5 kg" required>
+
+        <label for="packageType">Package Type *</label>
+        <select id="packageType" name="packageType" required>
+          <option value="">Select Package Type</option>
+          <option value="box">Box</option>
+          <option value="envelope">Envelope</option>
+          <option value="cargo">Cargo</option>
+          <option value="document">Document</option>
+          <option value="other">Other</option>
+        </select>
+
+        <label for="serviceType">Service Type *</label>
+        <select id="serviceType" name="serviceType" required>
+          <option value="">Select Service Type</option>
+          <option value="express">Express</option>
+          <option value="standard">Standard</option>
+          <option value="international">International Priority</option>
+        </select>
+
+        <label for="specialHandling">Special Handling</label>
+        <textarea id="specialHandling" name="specialHandling" placeholder="Fragile, perishable, etc." rows="2"></textarea>
+
+        <!-- Pickup Details -->
+        <h3>Pickup Details</h3>
+        <label for="pickupDate">Pickup Date *</label>
+        <input type="date" id="pickupDate" name="pickupDate" required>
+
+        <label for="pickupTime">Pickup Time *</label>
+        <input type="time" id="pickupTime" name="pickupTime" required>
+
+        <label for="pickupLocation">Pickup Location *</label>
+        <input type="text" id="pickupLocation" name="pickupLocation" placeholder="Home, Office, Other" required>
+
+        <label for="pickupType">Pickup Type *</label>
+        <select id="pickupType" name="pickupType" required>
+          <option value="">Select Pickup Type</option>
+          <option value="one-time">One-time</option>
+          <option value="recurring">Recurring</option>
+          <option value="on-demand">On Demand</option>
+        </select>
+
+        <!-- Authorization -->
+        <h3>Authorization</h3>
+        <p>By submitting this form, you authorize <strong>Vertex Express</strong> to pick up the shipment at the address provided.</p>
+        <div class="form-check mt-2">
+          <input class="form-check-input" type="checkbox" id="authorization" name="authorization" required>
+          <label class="form-check-label" for="authorization">
+            I agree and authorize Vertex Express to pick up my shipment.
+          </label>
+        </div>
+
+        <!-- Submit -->
+        <button type="submit">Request Pickup</button>
+      </form>
     </div>
   </div>
 </section>
 
-<section class="why-vertex">
-  <h2>Why Ship With Vertex Express?</h2>
-  <p>Innovative solutions for reliability & speed.</p>
 
-  <div class="why-grid">
-    <div class="why-card">
-      <h3>Premium Shipping at Professional Rates</h3>
-      <p>Reliable delivery and careful handling — on time, every time.</p>
+<!-- Contact Start -->
+    <div class="container-fluid py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-5 pb-4 pb-lg-0">
+                    <div class="bg-primary text-dark text-center p-4">
+                        <h4 class="m-0"><i class="fa fa-map-marker-alt text-white mr-2"></i>123 Street, New York, USA</h4>
+                    </div>
+                    <iframe style="width: 100%; height: 520px;"
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3001156.4288297426!2d-78.01371936852176!3d42.72876761954724!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4ccc4bf0f123a5a9%3A0xddcfc6c1de189567!2sNew%20York%2C%20USA!5e0!3m2!1sen!2sbd!4v1603794290143!5m2!1sen!2sbd"
+                        frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
+                </div>
+                <div class="col-lg-7">
+                    <h6 class="text-primary text-uppercase font-weight-bold">Contact Us</h6>
+                    <h1 class="mb-4">Contact For Any Queries</h1>
+                    <div class="contact-form bg-secondary" style="padding: 30px;">
+                        <div id="success"></div>
+                        <form name="sentMessage" id="contactForm" novalidate="novalidate">
+                            <div class="control-group">
+                                <input type="text" class="form-control border-0 p-4" id="name" placeholder="Your Name"
+                                    required="required" data-validation-required-message="Please enter your name" />
+                                <p class="help-block text-danger"></p>
+                            </div>
+                            <div class="control-group">
+                                <input type="email" class="form-control border-0 p-4" id="email" placeholder="Your Email"
+                                    required="required" data-validation-required-message="Please enter your email" />
+                                <p class="help-block text-danger"></p>
+                            </div>
+                            <div class="control-group">
+                                <input type="text" class="form-control border-0 p-4" id="subject" placeholder="Subject"
+                                    required="required" data-validation-required-message="Please enter a subject" />
+                                <p class="help-block text-danger"></p>
+                            </div>
+                            <div class="control-group">
+                                <textarea class="form-control border-0 py-3 px-4" rows="3" id="message" placeholder="Message"
+                                    required="required"
+                                    data-validation-required-message="Please enter your message"></textarea>
+                                <p class="help-block text-danger"></p>
+                            </div>
+                            <div>
+                                <button class="btn btn-primary py-3 px-4" type="submit" id="sendMessageButton">Send
+                                    Message</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="why-card">
-      <h3>We Ship Everywhere</h3>
-      <p>From major cities to remote regions worldwide.</p>
+    <!-- Contact End -->
+
+
+
+
+    <!-- Footer Start -->
+<footer class="bg-dark text-white pt-5">
+    <div class="container">
+        <div class="row">
+
+            <!-- Company Info -->
+            <div class="col-lg-4 col-md-6 mb-4">
+                <h5 class="text-uppercase text-primary mb-3">Vertex Express</h5>
+                <p>We deliver faster, safer, and more reliable logistics solutions worldwide. Connecting businesses and communities with precision and care.</p>
+                <div class="d-flex mt-3">
+                    <a class="text-white mr-3" href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a class="text-white mr-3" href="#"><i class="fab fa-twitter"></i></a>
+                    <a class="text-white mr-3" href="#"><i class="fab fa-linkedin-in"></i></a>
+                    <a class="text-white" href="#"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+
+            <div class="col-lg-2 col-md-6 mb-4">
+                    <h5 class="text-uppercase text-primary mb-3">Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <a href="index.html" class="nav-item nav-link">Home</a>
+                    <a href="about.html" class="nav-item nav-link active">About</a>
+                    <a href="service.html" class="nav-item nav-link">Service</a>
+                    <a href="blog.html" class="nav-item nav-link">Blog</a>
+                    <a href="contact.html" class="nav-item nav-link">Contact</a>
+                    </ul>
+                </div>
+
+
+            <!-- Contact Info -->
+            <div class="col-lg-3 col-md-6 mb-4">
+                <h5 class="text-uppercase text-primary mb-3">Contact</h5>
+                <p><i class="fa fa-map-marker-alt mr-2"></i>123 Street, New York, USA</p>
+                <p><i class="fa fa-phone-alt mr-2"></i>+1 012 345 6789</p>
+                <p><i class="fa fa-envelope mr-2"></i>info@vertexexpress.com</p>
+            </div>
+
+            <!-- Newsletter -->
+            <div class="col-lg-3 col-md-6 mb-4">
+                <h5 class="text-uppercase text-primary mb-3">Newsletter</h5>
+                <p>Subscribe to receive the latest updates and logistics insights.</p>
+                <div class="input-group">
+                    <input type="email" class="form-control" placeholder="Your Email">
+                    <div class="input-group-append">
+                        <button class="btn btn-primary">Subscribe</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
     </div>
-    <div class="why-card">
-      <h3>Reliable Two-Day Shipping</h3>
-      <p>Flat-rate express options across key regions.</p>
+
+    <!-- Footer Bottom -->
+    <div class="container-fluid bg-secondary text-center py-3 mt-4">
+        <small>&copy; 2026 Vertex Express. All Rights Reserved.</small>
     </div>
-    <div class="why-card">
-      <h3>Secure & Swift Arrival</h3>
-      <p>Safe handling and optimized transportation network.</p>
-    </div>
-  </div>
-
-  <div class="trust">
-    <span>ISO Certified</span>
-    <span>Global Logistics Network</span>
-    <span>24/7 Support</span>
-    <span>Enterprise Trusted</span>
-  </div>
-</section>
-
-<section id="pickup">
-  <h2>Schedule a Pickup</h2>
-  <form id="pickupForm">
-    <input type="text" placeholder="Full Name" required>
-    <input type="tel" placeholder="Phone Number" required>
-    <input type="text" placeholder="Pickup Address" required>
-    <input type="date" required>
-    <input type="time" required>
-    <select>
-      <option>Home</option>
-      <option>Office</option>
-    </select>
-    <button type="submit">Request Pickup</button>
-  </form>
-</section>
-
-<section class="about-company">
-  <div class="about-overlay"></div>
-  <div class="about-content">
-    <h2>About Vertex Express</h2>
-    <p>Delivering parcels with speed, reliability, and global coverage. Trusted by businesses and customers worldwide.</p>
-
-    <div class="about-grid">
-      <div class="about-card">
-        <h3>Our Mission</h3>
-        <p>To connect businesses and customers globally through secure, timely, and efficient logistics solutions.</p>
-      </div>
-      <div class="about-card">
-        <h3>Our Vision</h3>
-        <p>To become the most reliable and transparent courier service worldwide, ensuring satisfaction at every delivery.</p>
-      </div>
-      <div class="about-card">
-        <h3>Global Reach</h3>
-        <p>Operating in 200+ countries and partnering with top international carriers for seamless delivery.</p>
-      </div>
-      <div class="about-card">
-        <h3>Quality & Standards</h3>
-        <p>ISO-certified processes and enterprise-grade operations ensure safety, accountability, and compliance.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section id="contact">
-<h2>Contact Us</h2>
-<p>Email: support@vertexexpress.com 
-</section>
-
-<footer>
-©️ 2026 Vertex Express | All Rights Reserved
 </footer>
+<!-- Footer End -->
 
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-lg btn-primary back-to-top"><i class="fa fa-angle-double-up"></i></a>
+
+
+   <!-- JavaScript Libraries -->
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+<script src="lib/easing/easing.min.js"></script>
+<script src="lib/waypoints/waypoints.min.js"></script>
+
+<!-- Template Javascript -->
+<script src="js/main.js"></script> 
+
+<!-- Barcode Library -->
+<script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
+
+<!-- Shipment Tracking Script -->
 <script>
-const deliveries = [
-  {
-    trackingNumber: "VTX7845123690",
-    carrier: "Vertex Express",
-    service: "International Priority",
+async function trackShipment() {
+    const trackingNumber = document.getElementById("trackingNumberInput").value.trim();
 
-    status: "In Transit",
-    statusCode: "IT",
-    statusIndex: 2,
-
-    shipmentDate: "2026-02-18 09:45",
-    estimatedDeliveryDate: "2026-02-27",
-    deliveredAt: null,
-
-    shipmentDetails: {
-      weight: "4.2 kg",
-      dimensions: "45 x 30 x 25 cm",
-      pieces: 1,
-      declaredValue: "USD 850",
-      contents: "Consumer Electronics"
-    },
-
-    route: {
-      origin: {
-        city: "Los Angeles",
-        state: "CA",
-        country: "United States",
-      },
-      destination: {
-        city: "Berlin",
-        state: null,
-        country: "Germany",
-      }
-    },
-
-    currentUpdate: {
-      location: "Frankfurt, Germany",
-      date: "2026-02-23 14:20",
-      description: "Arrived at international transit facility"
-    },
-
-    shipper: {
-      name: "Michael Anderson",
-      company: "Anderson Tech Supplies",
-      phone: "+1 213 555 0182",
-      address: "125 Sunset Blvd, Los Angeles, CA 90001, USA"
-    },
-
-    recipient: {
-      name: "Lukas Schneider",
-      phone: "+49 30 98765432",
-      address: "Invalidenstraße 117, 10115 Berlin, Germany"
-    },
-
-    trackingEvents: [
-      {
-        date: "2026-02-18 09:45",
-        location: "Los Angeles, CA, USA",
-        status: "Shipment information received"
-      },
-      {
-        date: "2026-02-18 13:10",
-        location: "Los Angeles, CA, USA",
-        status: "Picked up by courier"
-      },
-      {
-        date: "2026-02-19 02:30",
-        location: "Los Angeles, CA, USA",
-        status: "Departed origin facility"
-      },
-      {
-        date: "2026-02-20 18:50",
-        location: "New York, USA",
-        status: "Arrived at export gateway"
-      },
-      {
-        date: "2026-02-21 23:40",
-        location: "In Transit",
-        status: "Departed United States"
-      },
-      {
-        date: "2026-02-23 14:20",
-        location: "Frankfurt, Germany",
-        status: "Arrived at international transit facility"
-      },
-      {
-        date: "2026-02-24 09:05",
-        location: "Berlin, Germany",
-        status: "Customs clearance completed"
-      }
-    ]
-  }
-];
-const counters=document.querySelectorAll(".stat-number[data-target]");
-function animateCounters(){
-  counters.forEach(counter=>{
-    const target=+counter.getAttribute("data-target");
-    const start=performance.now();
-    function update(time){
-      const progress=Math.min((time-start)/1000,1);
-      counter.innerText=Math.floor(target*progress).toLocaleString()+"+";
-      if(progress<1)requestAnimationFrame(update);
-      else counter.innerText=target.toLocaleString()+"+";
-    }
-    requestAnimationFrame(update);
-  });
-}
-animateCounters();
-setInterval(()=>{counters.forEach(c=>c.innerText="0");animateCounters();},3000);
-
-
-async function trackPackage() {
-  const trackingNumber = document.getElementById("trackingInput").value.trim();
-  if (!trackingNumber) return alert("Enter a tracking number");
-
-  try {
-    const res = await fetch(`/admin/deliveries/${trackingNumber}`);
-    const data = await res.json();
-
-    if (!res.ok) {
-      alert(data.message || "Tracking number not found");
-      return;
+    if (!trackingNumber) {
+        alert("Enter tracking number");
+        return;
     }
 
-    // ✅ Here's where your historyHTML goes
-    const historyHTML = (data.trackingEvents || []).map(event => `
-      <div style="margin-bottom:10px; padding:10px; border-left:3px solid orange;">
-        <strong>${new Date(event.date).toLocaleDateString()}</strong> — ${event.location}<br>
-        ${event.status}
-      </div>
-    `).join("") || "<em>No tracking events yet.</em>";
+    try {
+        const response = await fetch(`/track/${trackingNumber}`);
 
-    // Insert into the container
-    const detailsDiv = document.getElementById("detailsContent");
-    detailsDiv.innerHTML = `
-      <h3>Shipment Details</h3>
-      <p><strong>Status:</strong> ${data.status}</p>
-      <p><strong>Current Location:</strong> ${data.currentLocation}</p>
-      <p><strong>Service:</strong> ${data.service}</p>
-      <p><strong>Weight:</strong> ${data.weight} kg</p>
-      <p><strong>Origin:</strong> ${data.origin}</p>
-      <p><strong>Destination:</strong> ${data.destination}</p>
-      <h4>Tracking History:</h4>
-      ${historyHTML}
-    `;
+        if (response.status === 404) {
+            alert("Shipment not found");
+            return;
+        }
 
-    document.getElementById("shipmentDetails").style.display = "block";
+        const data = await response.json();
 
-  } catch (err) {
-    console.error(err);
-    alert("Error fetching tracking info");
-  }
+        // Show the tracking result card
+        document.getElementById("trackingResult").style.display = "block";
+
+        // Tracking number and barcode
+        document.getElementById("trackingNumberDisplay").textContent = data.trackingNumber;
+        JsBarcode("#barcode", data.trackingNumber, {
+            format: "CODE128",
+            width: 2,
+            height: 60,
+            displayValue: true
+        });
+
+        // Shipment summary
+        document.getElementById("status").textContent = data.status;
+        document.getElementById("location").textContent = data.currentLocation;
+        document.getElementById("deliveryDate").textContent = data.estimatedDeliveryDate
+            ? new Date(data.estimatedDeliveryDate).toLocaleDateString()
+            : "N/A";
+
+        // Sender information
+        document.getElementById("senderInfo").innerHTML = `
+            ${data.senderFullName}<br>
+            ${data.senderAddress}<br>
+            Phone: ${data.senderPhone}<br>
+            Email: ${data.senderEmail}
+        `;
+
+        // Receiver information
+        document.getElementById("receiverInfo").innerHTML = `
+            ${data.receiverFullName}<br>
+            ${data.receiverAddress}<br>
+            Phone: ${data.receiverPhone}<br>
+            Email: ${data.receiverEmail}
+        `;
+
+        // Package details
+        document.getElementById("packageInfo").innerHTML = `
+            Weight: ${data.weight} kg<br>
+            Type: ${data.packageType}<br>
+            Service: ${data.service}<br>
+            Signature Required: ${data.signatureRequired ? "Yes" : "No"}
+        `;
+
+        // Tracking timeline (professional vertical style)
+const timeline = document.getElementById("timeline");
+timeline.innerHTML = "";
+
+if (data.trackingHistory && Array.isArray(data.trackingHistory) && data.trackingHistory.length > 0) {
+    const sortedEvents = data.trackingHistory
+        .filter(event => event) // remove any undefined
+        .sort((a, b) => new Date(a.date) - new Date(b.date));
+
+    sortedEvents.forEach(event => {
+        const li = document.createElement("li");
+        li.className = "list-group-item d-flex justify-content-between align-items-center";
+
+        li.innerHTML = `
+            <span class="timeline-date">${event.date ? new Date(event.date).toLocaleDateString() : 'N/A'}</span>
+            <span class="timeline-location">${event.location || 'Unknown'}</span>
+            <span class="timeline-status badge badge-primary">${event.status || 'Pending'}</span>
+        `;
+        timeline.appendChild(li);
+    });
+} else {
+    timeline.innerHTML = "<li class='list-group-item'>No tracking history yet</li>";
 }
 
-// Helper to color-code statuses
-function getStatusColor(status) {
-  if (!status) return 'gray';
-  status = status.toLowerCase();
-  if (status.includes("delivered")) return 'green';
-  if (status.includes("in transit")) return 'orange';
-  if (status.includes("customs")) return 'red';
-  if (status.includes("out for delivery")) return 'blue';
-  if (status.includes("picked up")) return 'purple';
-  return 'gray';
+        // Tracking history
+        const history = document.getElementById("history");
+        history.innerHTML = "";
+        if (data.trackingHistory && Array.isArray(data.trackingHistory) && data.trackingHistory.length > 0) {
+    data.trackingHistory.forEach(event => {
+        if (!event) return; // skip undefined
+        const li = document.createElement("li");
+        li.className = "list-group-item";
+        li.innerHTML = `${event.date ? new Date(event.date).toLocaleString() : 'N/A'} - ${event.location || 'Unknown'} - ${event.status || 'Pending'}`;
+        history.appendChild(li);
+    });
+} else {
+    history.innerHTML = "<li class='list-group-item'>No tracking history yet</li>";
 }
-
-/* === Smooth Scroll for Nav Links === */
-document.querySelectorAll('nav a').forEach(link => {
-  link.addEventListener('click', e => {
-    e.preventDefault();
-    const targetId = link.getAttribute('href').slice(1);
-    const targetSection = document.getElementById(targetId);
-    if (targetSection) {
-      targetSection.scrollIntoView({ behavior: 'smooth' });
+    } catch (error) {
+        console.error(error);
+        alert("Server error loading shipment");
     }
-  });
-});
+}
 </script>
 
+<script>
+    const menuBtn = document.getElementById('menuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    const menuLinks = mobileMenu.querySelectorAll('a');
+
+    // Toggle menu
+    menuBtn.addEventListener('click', () => {
+        menuBtn.classList.toggle('active'); 
+        mobileMenu.classList.toggle('active'); 
+
+        // Add stagger animation
+        menuLinks.forEach((link, index) => {
+            link.style.animation = mobileMenu.classList.contains('active')
+                ? `fadeSlideIn 0.4s ease forwards ${index * 0.1 + 0.2}s`
+                : `fadeSlideOut 0.3s ease forwards 0s`;
+        });
+    });
+
+    // Close menu when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!mobileMenu.contains(e.target) && !menuBtn.contains(e.target)) {
+            menuBtn.classList.remove('active');
+            mobileMenu.classList.remove('active');
+            menuLinks.forEach(link => link.style.animation = ''); // Reset
+        }
+    });
+</script>
+
+<!-- Global Logistics Stats Script -->
+ <script>
+
+const counters = document.querySelectorAll('.stat-number');
+
+function runCounters(){
+
+counters.forEach(counter => {
+
+counter.innerText = "0";
+
+const target = +counter.getAttribute('data-target');
+let count = 0;
+
+const updateCount = () => {
+
+const increment = target / 100;
+
+count += increment;
+
+if(count < target){
+
+counter.innerText = Math.ceil(count);
+
+setTimeout(updateCount,20);
+
+}else{
+
+counter.innerText = target;
+
+}
+
+};
+
+updateCount();
+
+});
+
+}
+
+// Run immediately
+runCounters();
+
+// Run every 5 seconds
+setInterval(runCounters,5000);
+
+window.addEventListener('scroll', startCounting);
+</script>
 </body>
 </html>
+

@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>FASTER - Logistics Company Website Template</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="Free HTML Templates" name="keywords">
+    <meta content="Free HTML Templates" name="description">
+
+    <!-- Favicon -->
+    <link href="img/favicon.ico" rel="icon">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="css/style.css" rel="stylesheet">
+</head>
+
+<body>
+
+    <!-- Navbar -->
+<div class="container-fluid p-0">
+    <nav class="navbar navbar-expand-lg bg-light navbar-light shadow-sm sticky-top px-4">
+        
+        <!-- Logo Mark + Company Name -->
+        <a href="index.html" class="navbar-brand d-flex align-items-center">
+            <svg class="logo-mark" width="40" height="40" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <polygon class="logo-v" points="10,90 50,10 90,90" fill="#4b3f72"/>
+                <polygon class="logo-arrow" points="55,25 85,25 50,90" fill="#ff6f00"/>
+            </svg>
+            <span class="ml-2 font-weight-bold" style="font-size: 1.5rem; color:#4b3f72;">VERTEX</span>
+            <span class="ml-1 font-weight-bold" style="font-size: 1.1rem; color:#ff6f00;">EXPRESS</span>
+        </a>
+
+        <!-- Hamburger Menu on Top Right -->
+        <button class="menu-btn ml-auto" id="menuBtn">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </nav>
+
+   <!-- Slide Menu -->
+<div id="mobileMenu" class="mobile-menu">
+
+    <div class="menu-header">
+        <h4>Vertex Express</h4>
+        <p>Global Logistics Network</p>
+    </div>
+
+    <div class="menu-divider"></div>
+
+    <a href="index.html"><i class="fas fa-home"></i> Home</a>
+    <a href="about.html"><i class="fas fa-building"></i> About</a>
+    <a href="service.html"><i class="fas fa-truck"></i> Services</a>
+    <a href="blog.html"><i class="fas fa-newspaper"></i> Blog</a>
+    <a href="contact.html"><i class="fas fa-envelope"></i> Contact</a>
+
+    <div class="menu-divider"></div>
+
+    <div class="menu-footer">
+        <p>Reliable Global Logistics Partner</p>
+    </div>
+
+</div>
+
+
+    <!-- Header Start -->
+    <div class="jumbotron jumbotron-fluid mb-5">
+        <div class="container text-center py-5">
+            <h1 class="text-white display-3">Contact</h1>
+            <div class="d-inline-flex align-items-center text-white">
+                <p class="m-0"><a class="text-white" href="">Home</a></p>
+                <i class="fa fa-circle px-3"></i>
+                <p class="m-0">Contact</p>
+            </div>
+        </div>
+    </div>
+    <!-- Header End -->
+
+
+    <!-- Contact Start -->
+    <div class="container-fluid py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-5 pb-4 pb-lg-0">
+                    <div class="bg-primary text-dark text-center p-4">
+                        <h4 class="m-0"><i class="fa fa-map-marker-alt text-white mr-2"></i>123 Street, New York, USA</h4>
+                    </div>
+                    <iframe style="width: 100%; height: 520px;"
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3001156.4288297426!2d-78.01371936852176!3d42.72876761954724!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4ccc4bf0f123a5a9%3A0xddcfc6c1de189567!2sNew%20York%2C%20USA!5e0!3m2!1sen!2sbd!4v1603794290143!5m2!1sen!2sbd"
+                        frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
+                </div>
+                <div class="col-lg-7">
+                    <h6 class="text-primary text-uppercase font-weight-bold">Contact Us</h6>
+                    <h1 class="mb-4">Contact For Any Queries</h1>
+                    <h5 class="mb-4">Receive messages instantly with our PHP and Ajax contact form - available in the <a href="https://htmlcodex.com/downloading/?item=1309">Pro Version</a> only.</h5>
+                    <div class="contact-form bg-secondary" style="padding: 30px;">
+                        <div id="success"></div>
+                        <form name="sentMessage" id="contactForm" novalidate="novalidate">
+                            <div class="control-group">
+                                <input type="text" class="form-control border-0 p-4" id="name" placeholder="Your Name"
+                                    required="required" data-validation-required-message="Please enter your name" />
+                                <p class="help-block text-danger"></p>
+                            </div>
+                            <div class="control-group">
+                                <input type="email" class="form-control border-0 p-4" id="email" placeholder="Your Email"
+                                    required="required" data-validation-required-message="Please enter your email" />
+                                <p class="help-block text-danger"></p>
+                            </div>
+                            <div class="control-group">
+                                <input type="text" class="form-control border-0 p-4" id="subject" placeholder="Subject"
+                                    required="required" data-validation-required-message="Please enter a subject" />
+                                <p class="help-block text-danger"></p>
+                            </div>
+                            <div class="control-group">
+                                <textarea class="form-control border-0 py-3 px-4" rows="3" id="message" placeholder="Message"
+                                    required="required"
+                                    data-validation-required-message="Please enter your message"></textarea>
+                                <p class="help-block text-danger"></p>
+                            </div>
+                            <div>
+                                <button class="btn btn-primary py-3 px-4" type="submit" id="sendMessageButton">Send
+                                    Message</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Contact End -->
+
+
+  <!-- Footer Start -->
+<footer class="bg-dark text-white pt-5">
+    <div class="container">
+        <div class="row">
+
+            <!-- Company Info -->
+            <div class="col-lg-4 col-md-6 mb-4">
+                <h5 class="text-uppercase text-primary mb-3">Vertex Express</h5>
+                <p>We deliver faster, safer, and more reliable logistics solutions worldwide. Connecting businesses and communities with precision and care.</p>
+                <div class="d-flex mt-3">
+                    <a class="text-white mr-3" href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a class="text-white mr-3" href="#"><i class="fab fa-twitter"></i></a>
+                    <a class="text-white mr-3" href="#"><i class="fab fa-linkedin-in"></i></a>
+                    <a class="text-white" href="#"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+
+            <div class="col-lg-2 col-md-6 mb-4">
+                    <h5 class="text-uppercase text-primary mb-3">Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <a href="index.html" class="nav-item nav-link">Home</a>
+                    <a href="about.html" class="nav-item nav-link active">About</a>
+                    <a href="service.html" class="nav-item nav-link">Service</a>
+                    <a href="blog.html" class="nav-item nav-link">Blog</a>
+                    <a href="contact.html" class="nav-item nav-link">Contact</a>
+                    </ul>
+                </div>
+
+
+            <!-- Contact Info -->
+            <div class="col-lg-3 col-md-6 mb-4">
+                <h5 class="text-uppercase text-primary mb-3">Contact</h5>
+                <p><i class="fa fa-map-marker-alt mr-2"></i>123 Street, New York, USA</p>
+                <p><i class="fa fa-phone-alt mr-2"></i>+1 012 345 6789</p>
+                <p><i class="fa fa-envelope mr-2"></i>info@vertexexpress.com</p>
+            </div>
+
+            <!-- Newsletter -->
+            <div class="col-lg-3 col-md-6 mb-4">
+                <h5 class="text-uppercase text-primary mb-3">Newsletter</h5>
+                <p>Subscribe to receive the latest updates and logistics insights.</p>
+                <div class="input-group">
+                    <input type="email" class="form-control" placeholder="Your Email">
+                    <div class="input-group-append">
+                        <button class="btn btn-primary">Subscribe</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Footer Bottom -->
+    <div class="container-fluid bg-secondary text-center py-3 mt-4">
+        <small>&copy; 2026 Vertex Express. All Rights Reserved.</small>
+    </div>
+</footer>
+<!-- Footer End -->
+
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-lg btn-primary back-to-top"><i class="fa fa-angle-double-up"></i></a>
+
+
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+    <script src="lib/easing/easing.min.js"></script>
+    <script src="lib/waypoints/waypoints.min.js"></script>
+
+    <!-- Template Javascript -->
+    <script src="js/main.js"></script>
+
+    <script>
+    const menuBtn = document.getElementById('menuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    const menuLinks = mobileMenu.querySelectorAll('a');
+
+    // Toggle menu
+    menuBtn.addEventListener('click', () => {
+        menuBtn.classList.toggle('active'); 
+        mobileMenu.classList.toggle('active'); 
+
+        // Add stagger animation
+        menuLinks.forEach((link, index) => {
+            link.style.animation = mobileMenu.classList.contains('active')
+                ? `fadeSlideIn 0.4s ease forwards ${index * 0.1 + 0.2}s`
+                : `fadeSlideOut 0.3s ease forwards 0s`;
+        });
+    });
+
+    // Close menu when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!mobileMenu.contains(e.target) && !menuBtn.contains(e.target)) {
+            menuBtn.classList.remove('active');
+            mobileMenu.classList.remove('active');
+            menuLinks.forEach(link => link.style.animation = ''); // Reset
+        }
+    });
+</script>
+</body>
+
+</html>

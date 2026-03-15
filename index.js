@@ -18,7 +18,6 @@ const adminUser = {
 const app = express();
 app.use(cors());
 app.use(express.json());
-app.use(express.static(__dirname + "/frontend"));
 
 countries.registerLocale(require("i18n-iso-countries/langs/en.json"));
 
@@ -51,6 +50,9 @@ const Delivery = mongoose.model(
     service: String,
     signatureRequired: Boolean,
     saturdayDelivery: Boolean,
+    shipmentDate: Date,
+    pickupDate: Date,
+    estimatedDeliveryDate: Date,
     status: String,
     currentLocation: String,
     trackingHistory: [
@@ -61,12 +63,19 @@ const Delivery = mongoose.model(
       },
     ],
     createdAt: { type: Date, default: Date.now },
+    items: [
+      {
+        itemName: String,
+        itemDescription: String,
+        itemQuantity: Number,
+        itemPrice: Number,
+        currency: String,
+      },
+    ],
   })
 );
 
-// ------------------ PROFESSIONAL TRACKING GENERATOR ------------------ //
-// Format: VTX + YY + MM + 6-digit random
-// Example: VTX2602482931
+// ------------------ TRACKING NUMBER GENERATOR ------------------ //
 function generateTrackingNumber() {
   const now = new Date();
   const year = now.getFullYear().toString().slice(-2);
@@ -78,24 +87,19 @@ function generateTrackingNumber() {
 // ------------------ AUTH ------------------ //
 app.post("/admin/login", (req, res) => {
   const { username, password } = req.body;
-
   if (
     username === adminUser.username &&
     bcrypt.compareSync(password, adminUser.passwordHash)
   ) {
-    const token = jwt.sign({ role: "admin" }, JWT_SECRET, {
-      expiresIn: "2h",
-    });
+    const token = jwt.sign({ role: "admin" }, JWT_SECRET, { expiresIn: "2h" });
     return res.json({ token });
   }
-
   res.status(401).json({ message: "Invalid credentials" });
 });
 
 function authenticateToken(req, res, next) {
   const authHeader = req.headers["authorization"];
   const token = authHeader && authHeader.split(" ")[1];
-
   if (!token) return res.status(401).json({ message: "No token provided" });
 
   jwt.verify(token, JWT_SECRET, (err, user) => {
@@ -105,9 +109,7 @@ function authenticateToken(req, res, next) {
   });
 }
 
-// ------------------ ROUTES ------------------ //
-
-// Get all countries
+// ------------------ COUNTRIES & CITIES ------------------ //
 app.get("/countries", (req, res) => {
   try {
     const codes = [...new Set(allCities.map(c => c.country))];
@@ -121,7 +123,6 @@ app.get("/countries", (req, res) => {
   }
 });
 
-// Get cities for a country
 app.get("/cities/:country", (req, res) => {
   try {
     const countryName = req.params.country;
@@ -139,41 +140,19 @@ app.get("/cities/:country", (req, res) => {
   }
 });
 
-// ------------------ ADMIN DELIVERY ROUTES ------------------ //
-
-// Create delivery (UPDATED WITH PROFESSIONAL TRACKING)
+// ------------------ ADMIN DELIVERIES ------------------ //
 app.post("/admin/deliveries", authenticateToken, async (req, res) => {
   try {
-
+    const data = req.body;
     const trackingNumber = generateTrackingNumber();
-
-    const delivery = new Delivery({
-      trackingNumber,
-      ...req.body,
-      status: "Shipment Created",
-      currentLocation: "Vertex Express Warehouse",
-      trackingHistory: [
-        {
-          date: new Date(),
-          location: "Vertex Express Warehouse",
-          status: "Shipment Created",
-        },
-      ],
-    });
-
+    const delivery = new Delivery({ ...data, trackingNumber });
     await delivery.save();
-
-    res.json({
-      message: "Delivery created successfully",
-      trackingNumber,
-    });
-
+    res.json({ trackingNumber });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
 
-// Get all deliveries
 app.get("/admin/deliveries", authenticateToken, async (req, res) => {
   try {
     const deliveries = await Delivery.find().sort({ createdAt: -1 });
@@ -183,88 +162,55 @@ app.get("/admin/deliveries", authenticateToken, async (req, res) => {
   }
 });
 
-// Public tracking route
-app.get("/admin/deliveries/:trackingNumber", async (req, res) => {
+app.get("/admin/deliveries/:trackingNumber", authenticateToken, async (req, res) => {
   try {
-    const delivery = await Delivery.findOne({
-      trackingNumber: req.params.trackingNumber,
-    });
-
-    if (!delivery)
-      return res.status(404).json({ message: "Delivery not found" });
-
-    res.json({
-      trackingNumber: delivery.trackingNumber,
-      status: delivery.status,
-      currentLocation: delivery.currentLocation,
-      sender: {
-        fullName: delivery.senderFullName,
-        address: delivery.senderAddress,
-        zip: delivery.senderZip,
-        phone: delivery.senderPhone,
-        email: delivery.senderEmail,
-        country: delivery.senderCountry,
-      },
-      receiver: {
-        fullName: delivery.receiverFullName,
-        address: delivery.receiverAddress,
-        zip: delivery.receiverZip,
-        phone: delivery.receiverPhone,
-        email: delivery.receiverEmail,
-        country: delivery.receiverCountry,
-      },
-      package: {
-        weight: delivery.weight,
-        type: delivery.packageType,
-        service: delivery.service,
-        signatureRequired: delivery.signatureRequired,
-        saturdayDelivery: delivery.saturdayDelivery,
-      },
-      trackingHistory: delivery.trackingHistory,
-      createdAt: delivery.createdAt,
-    });
+    const delivery = await Delivery.findOne({ trackingNumber: req.params.trackingNumber });
+    if (!delivery) return res.status(404).json({ message: "Shipment not found" });
+    res.json(delivery);
   } catch (err) {
-    res.status(500).json({ message: "Error fetching delivery" });
+    res.status(500).json({ error: err.message });
   }
 });
 
-// Update delivery
 app.put("/admin/deliveries/:trackingNumber", authenticateToken, async (req, res) => {
   try {
-    const delivery = await Delivery.findOne({
-      trackingNumber: req.params.trackingNumber,
-    });
-
-    if (!delivery)
-      return res.status(404).json({ message: "Delivery not found" });
-
-    Object.assign(delivery, req.body);
-    await delivery.save();
-
-    res.json({ message: "Delivery updated successfully" });
+    const { status, currentLocation } = req.body;
+    const delivery = await Delivery.findOneAndUpdate(
+      { trackingNumber: req.params.trackingNumber },
+      { status, currentLocation },
+      { new: true }
+    );
+    if (!delivery) return res.status(404).json({ message: "Shipment not found" });
+    res.json(delivery);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
 
-// Delete delivery
 app.delete("/admin/deliveries/:trackingNumber", authenticateToken, async (req, res) => {
   try {
-    const deleted = await Delivery.findOneAndDelete({
-      trackingNumber: req.params.trackingNumber,
-    });
-
-    if (!deleted)
-      return res.status(404).json({ message: "Delivery not found" });
-
-    res.json({ message: "Delivery deleted successfully" });
+    const delivery = await Delivery.findOneAndDelete({ trackingNumber: req.params.trackingNumber });
+    if (!delivery) return res.status(404).json({ message: "Shipment not found" });
+    res.json({ message: "Deleted successfully" });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
+
+// ------------------ TRACK SHIPMENT PUBLIC ------------------ //
+app.get("/track/:trackingNumber", async (req, res) => {
+  try {
+    const delivery = await Delivery.findOne({ trackingNumber: req.params.trackingNumber });
+    if (!delivery) return res.status(404).json({ message: "Shipment not found" });
+    res.json(delivery);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// ------------------ SERVE FRONTEND ------------------ //
+app.use(express.static(__dirname + "/frontend"));
 
 // ------------------ START SERVER ------------------ //
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () =>
-  console.log(`Vertex Express server running on http://localhost:${PORT}`)
-);
+app.listen(PORT, () => console.log(`Server running at http://localhost:${PORT}`));
