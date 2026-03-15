@@ -21,8 +21,9 @@ app.use(express.json());
 
 countries.registerLocale(require("i18n-iso-countries/langs/en.json"));
 
+require("dotenv").config();
 // ------------------ MONGODB CONNECTION ------------------ //
-mongoose.connect("mongodb://127.0.0.1:27017/courier", {
+mongoose.connect(process.env.DB_URI, {
   dbName: "courier",
 })
 .then(() => console.log("MongoDB Connected"))
