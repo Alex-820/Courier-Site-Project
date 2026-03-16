@@ -23,7 +23,7 @@ countries.registerLocale(require("i18n-iso-countries/langs/en.json"));
 
 require("dotenv").config();
 // ------------------ MONGODB CONNECTION ------------------ //
-mongoose.connect(process.env.DB_URI, {
+mongoose.connect(process.env.MONGODB_URI, {
   dbName: "courier",
 })
 .then(() => console.log("MongoDB Connected"))
