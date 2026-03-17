@@ -20,6 +20,76 @@
 
     <!-- Customized Bootstrap Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+        <style>
+            body{
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        .hero-title{
+            font-size:2.7rem;
+            font-weight:800;
+            letter-spacing:-1px;
+            margin-bottom:10px;
+        }
+        
+        .hero-subtitle{
+            font-size:1.05rem;
+            font-weight:500;
+            opacity:0.9;
+        }
+
+        .breadcrumb-nav{
+            font-size:.9rem;
+            font-weight:500;
+        }
+
+        .section-main{
+            font-size:2rem;
+            font-weight:800;
+            margin-bottom:8px;
+        }
+        
+        .section-sub{
+            font-size:1rem;
+            color:#666;
+            margin-bottom:25px;
+        }
+
+        .contact-form{
+            background:#f8f9fa;
+            border-radius:8px;
+        }
+        
+        .contact-form input,
+        .contact-form textarea{
+            font-size:.95rem;
+            font-weight:500;
+        }
+        
+        .contact-form input:focus,
+        .contact-form textarea:focus{
+            box-shadow:none;
+            border:1px solid #ddd;
+        }
+
+        .footer-title{
+            font-weight:700;
+            letter-spacing:.5px;
+            margin-bottom:15px;
+        }
+
+        .btn-primary{
+            background:#ff6a00;
+            border:none;
+            font-weight:600;
+        }
+        
+        .btn-primary:hover{
+            background:#e65f00;
+        }
+        </style>
 </head>
 
 <body>
@@ -74,8 +144,15 @@
     <!-- Header Start -->
     <div class="jumbotron jumbotron-fluid mb-5">
         <div class="container text-center py-5">
-            <h1 class="text-white display-3">Contact</h1>
-            <div class="d-inline-flex align-items-center text-white">
+            <h1 class="hero-title text-white">
+                Contact Vertex Express
+            </h1>
+            
+            <p class="hero-subtitle text-white">
+                Fast answers. Real-time support. Get help with shipments, tracking, and logistics—anywhere, anytime.
+            </p>
+            
+            <div class="breadcrumb-nav text-white">
                 <p class="m-0"><a class="text-white" href="">Home</a></p>
                 <i class="fa fa-circle px-3"></i>
                 <p class="m-0">Contact</p>
@@ -98,8 +175,16 @@
                         frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
                 </div>
                 <div class="col-lg-7">
-                    <h6 class="text-primary text-uppercase font-weight-bold">Contact Us</h6>
-                    <h1 class="mb-4">Contact For Any Queries</h1>
+
+                </div><h2 class="section-main">
+                    Contact Us
+                </h2>
+                
+                <p class="section-sub">
+                    <p class="section-sub">
+                        Fill out the form below and our logistics specialists will respond promptly to help you track, ship, or schedule pickups.
+                    </p>
+                </p>
                     <h5 class="mb-4">Receive messages instantly with our PHP and Ajax contact form - available in the <a href="https://htmlcodex.com/downloading/?item=1309">Pro Version</a> only.</h5>
                     <div class="contact-form bg-secondary" style="padding: 30px;">
                         <div id="success"></div>
@@ -126,8 +211,9 @@
                                 <p class="help-block text-danger"></p>
                             </div>
                             <div>
-                                <button class="btn btn-primary py-3 px-4" type="submit" id="sendMessageButton">Send
-                                    Message</button>
+                                <small class="text-muted">We respect your privacy. No spam. You can track your inquiries anytime.</small>
+                                <button class="btn btn-primary py-3 px-4" type="submit" id="sendMessageButton">
+                                    Send Message & Get Support</button>
                             </div>
                         </form>
                     </div>
@@ -137,6 +223,28 @@
     </div>
     <!-- Contact End -->
 
+    <!-- Trusted By Section -->
+     <div class="container py-5 text-center">
+        <h2 class="mb-3 font-weight-bold">Trusted by Businesses Worldwide</h2>
+        <p class="text-muted mb-5">
+        Companies rely on Vertex Express to ship goods safely, on time, and across the globe.
+    </p>
+    <div class="row justify-content-center">
+        <div class="col-md-2 col-4 mb-3">
+            <img src="img/company1.png" class="img-fluid" alt="Company 1">
+        </div>
+        <div class="col-md-2 col-4 mb-3">
+            <img src="img/company2.png" class="img-fluid" alt="Company 2">
+        </div>
+        <div class="col-md-2 col-4 mb-3">
+            <img src="img/company3.png" class="img-fluid" alt="Company 3">
+        </div>
+        <div class="col-md-2 col-4 mb-3">
+            <img src="img/company4.png" class="img-fluid" alt="Company 4">
+        </div>
+    </div>
+</div>
+
 
   <!-- Footer Start -->
 <footer class="bg-dark text-white pt-5">
@@ -145,8 +253,12 @@
 
             <!-- Company Info -->
             <div class="col-lg-4 col-md-6 mb-4">
-                <h5 class="text-uppercase text-primary mb-3">Vertex Express</h5>
-                <p>We deliver faster, safer, and more reliable logistics solutions worldwide. Connecting businesses and communities with precision and care.</p>
+                <h4 class="footer-title">Vertex Express</h4>
+                <p>
+                    Vertex Express helps businesses and individuals move packages quickly and securely. 
+                    From urgent documents to cargo shipments, our logistics network ensures every package 
+                    is tracked and delivered on time.
+                </p>
                 <div class="d-flex mt-3">
                     <a class="text-white mr-3" href="#"><i class="fab fa-facebook-f"></i></a>
                     <a class="text-white mr-3" href="#"><i class="fab fa-twitter"></i></a>

@@ -29,6 +29,9 @@ mongoose.connect(process.env.MONGODB_URI, {
 .then(() => console.log("MongoDB Connected"))
 .catch(err => console.error("MongoDB connection error:", err));
 
+// ------------------ HEALTH CHECK ------------------ //
+app.get("/healthz", (req, res) => res.send("OK"));
+
 // ------------------ DELIVERY MODEL ------------------ //
 const Delivery = mongoose.model(
   "Delivery",
